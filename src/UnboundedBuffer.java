@@ -16,6 +16,12 @@ public class UnboundedBuffer<T> extends Buffer<T> {
 		super();
 		this.limit = limit;
 	}
+	
+	
+	// isFull
+	public boolean isFull() {
+		return this.size() == limit;
+	}
 
 
 	// add element
