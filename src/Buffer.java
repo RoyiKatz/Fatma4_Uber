@@ -1,6 +1,7 @@
+import java.util.Iterator;
 import java.util.Vector;
 
-public class Buffer<T> {
+public class Buffer<T> implements Iterable<T>{
 
 	protected Vector<T> queue;
 	
@@ -47,5 +48,11 @@ public class Buffer<T> {
 		T first = queue.get(0);
 		queue.remove(0);
 		return first;
+	}
+
+
+	@Override
+	public Iterator<T> iterator() {
+		return queue.iterator();
 	}
 }
