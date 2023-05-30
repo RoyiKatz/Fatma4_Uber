@@ -10,7 +10,14 @@ public class ServiceCall implements Comparable<ServiceCall> {
 		
 		this.id = id;
 		this.customer = customer;
-		this.service_type = service_type;
+		
+		// check service type
+		if (service_type.equals("Taxi") || service_type.equals("Delivery")) {
+			this.service_type = service_type;
+		} else {
+			throw new ServiceException(service_type + " is not a valid service.");
+		}
+		
 		this.service_area = service_area;
 		this.distance = distance;
 		
@@ -21,6 +28,11 @@ public class ServiceCall implements Comparable<ServiceCall> {
 	public double distance() {
 		return distance;
 	}
+	
+	public String type() {
+		return service_type;
+	}
+	
 	
 	@Override
 	public int compareTo(ServiceCall other) {
@@ -34,5 +46,13 @@ public class ServiceCall implements Comparable<ServiceCall> {
 	}
 	
 	
+	public String toString() {
+		String str = "Call ID: " + id + "\n";
+		str += "Service Type: " + service_type + "\n";
+		str += "Service Area: " + service_area + "\n";
+		str += "Driving Distance: " + distance + "m";
+		
+		return str;
+	}
 	
 }
