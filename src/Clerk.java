@@ -2,10 +2,13 @@ import java.util.Vector;
 
 public class Clerk  extends Employee implements Runnable{
 
-	private UnboundedBuffer<Request> calls; // don't konw if requests or service calls
+	private UnboundedBuffer<Request> requests;
+	private UnboundedBuffer<Request> special_requests;
 	
-	public Clerk(int id) {
+	public Clerk(int id, UnboundedBuffer<Request> requests, UnboundedBuffer<Request> special_requests) {
 		super(id, 4);
+		this.requests = requests;
+		this.special_requests = special_requests;
 	}
 
 	@Override
@@ -24,6 +27,9 @@ public class Clerk  extends Employee implements Runnable{
 	// check a request
 	private void checkRequest(Request request) {
 		
+		//remove from request queue
+		requests.remove();
+		
 		// check customer
 		Customer c = findCustomer(request.customerID(), null);
 		if (c == null) {
@@ -36,6 +42,7 @@ public class Clerk  extends Employee implements Runnable{
 			makeServiceCallFrom(request);
 		} else {
 			// move request to manager
+			special_requests.add(request);
 		}
 	}
 	
