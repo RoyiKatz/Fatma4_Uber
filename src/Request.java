@@ -27,4 +27,22 @@ public class Request {
 		}
 	}
 	
+	
+	// getters
+	public int customerID() {
+		return customer_id;
+	}
+	
+	public String serviceType() {
+		return service_type;
+	}
+	
+	public String area() {
+		return service_area;
+	}
+	
+	public double distance() {
+		return distance;
+	}
+	
 }
