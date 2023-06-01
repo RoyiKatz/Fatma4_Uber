@@ -2,17 +2,19 @@
 public abstract class Employee {
 
 	protected int id;
-	protected int rate;
+	protected int wage;
 	
 	
-	// constructors
-	public Employee(int id, int rate) {
-		this.id = id;
-		this.rate = rate;
-	}
-	
+	// constructor
 	public Employee(int id) {
 		this.id = id;
+		wage = 0;
+	}
+	
+	
+	// getter
+	public int wage() {
+		return wage;
 	}
 	
 }

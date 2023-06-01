@@ -12,13 +12,16 @@ public class InformationSystem {
 	
 	
 	// add call
-	public void addCall(ServiceCall call) {
+	public synchronized void addCall(ServiceCall call) {
 		
 		if (call.type().equals("Taxi")) {
 			taxi_calls.add(call);
 		} else {
 			delivery_calls.add(call);
 		}
+		
+		// print message
+		
 	}
 	
 }

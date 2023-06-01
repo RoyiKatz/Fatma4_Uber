@@ -1,48 +1,68 @@
 
-public class Request {
+public class Request extends Call implements Runnable {
 
 	private int customer_id;
-	private String service_type, service_area;
-	private double distance;
+	private double arrival_time, working_time;
+	private UnboundedBuffer<Request> requests;
 	
 	
 	// constructor
-	public Request(int customer_id, String service_type, String service_area, double distance) {
+	public Request(int customer_id, String service_type, String service_area,
+			double distance, double arrival, double working_time, UnboundedBuffer<Request> requests) {
 		
+		super(service_type, service_area, distance);
+
 		this.customer_id = customer_id;
+		arrival_time = arrival;
+		this.working_time = working_time;
+		this.requests = requests;
 		
-		//check service type
-		checkService(service_type);
-		
-		this.service_area = service_area;
-		this.distance = distance;
 	}
 	
-	// check a given service type
-	private void checkService(String service) {
-		if (service.equals("Delivery") || service.equals("Taxi")) {
-			service_type = service;
-		} else {
-			throw new ServiceException(service + " is not a valid service.");
-		}
-	}
-	
-	
+
 	// getters
 	public int customerID() {
 		return customer_id;
 	}
 	
-	public String serviceType() {
-		return service_type;
+	public double time() {
+		return working_time;
 	}
 	
-	public String area() {
-		return service_area;
+	public long arrivalTime() {
+		long time = (long)(arrival_time * 1000);
+		return time;
 	}
 	
-	public double distance() {
-		return distance;
+	
+	// add request to queue
+	private synchronized void addToQueue() {
+		requests.add(this);
+		requests.notifyAll();
 	}
+
+	
+	@Override
+	public void run() {
+		// sleep
+		try {
+			Thread.sleep(arrivalTime());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// adding to request queue
+		addToQueue();
+		
+		// wait for request to be processed
+		try {
+			this.wait();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 }
