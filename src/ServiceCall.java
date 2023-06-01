@@ -12,6 +12,12 @@ public class ServiceCall extends Call implements Comparable<ServiceCall> {
 		this.customer = customer;
 		
 	}
+	
+	
+	// getter
+	public int id() {
+		return id;
+	}
 		
 	
 	@Override

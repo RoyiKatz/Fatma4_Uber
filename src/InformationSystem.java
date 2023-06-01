@@ -24,4 +24,20 @@ public class InformationSystem {
 		
 	}
 	
+	
+	// getters
+	public UnboundedBuffer<ServiceCall> deliveryCalls(){
+		return delivery_calls;
+	}
+	
+	public UnboundedBuffer<ServiceCall> taxiCalls(){
+		return taxi_calls;
+	}
+	
+	
+	// is empty
+	public boolean isEmpty() {
+		return delivery_calls.isEmpty() && taxi_calls.isEmpty();
+ 	}
+	
 }

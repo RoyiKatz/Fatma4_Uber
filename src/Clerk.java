@@ -27,7 +27,7 @@ public class Clerk  extends Employee implements Runnable{
 		}
 		
 		// finished the day - notify other clerks
-		requests.notifyAll();;
+		this.notifyAll();;
 
 	}
 	
@@ -100,6 +100,9 @@ public class Clerk  extends Employee implements Runnable{
 		double distance = request.distance();
 
 		ServiceCall call = new ServiceCall(0 /*change*/, c, service, area, distance);
+		
+		//sleep
+		
 
 		// add call to queue
 		calls.add(call);

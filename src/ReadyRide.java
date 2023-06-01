@@ -11,4 +11,9 @@ public class ReadyRide {
 		vehicle = v;
 	}
 	
+	
+	// getters
+	public Vehicle vehicle() {
+		return vehicle;
+	}
 }

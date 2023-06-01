@@ -1,12 +1,12 @@
 
-public class Manager {
+public class Manager extends Thread {
 
-	private int completed_rides;
+	private UnboundedBuffer<Request> requests;
 	
 	
 	// constructor
-	public Manager() {
-		completed_rides = 0;
+	public Manager(UnboundedBuffer<Request> requests) {
+		this.requests = requests;
 	}
 	
 }
