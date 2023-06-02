@@ -21,4 +21,10 @@ public class Customer {
 		return (int)(Math.random() * 10) + 1;
 	}
 	
+	
+	// return the payment for a ride
+	public double pay(double time, double Fare) {
+		return 2 * time + Fare ;
+	}
+	
 }
