@@ -47,9 +47,8 @@ public class Driver extends Employee implements Runnable{
 			// simulate drive
 			drive(ride);
 			
-			// dropping passenger
-			Customer passenger = ride.details().customer();
-			drop(passenger);
+			// end drive
+			endRide(ride);
 			
 			// returning vehicle
 			
@@ -61,32 +60,63 @@ public class Driver extends Employee implements Runnable{
 	
 	
 	// simulate drive
-	private void drive(ReadyRide ride) {
+		private void drive(ReadyRide ride) {
+			
+			double driving_distance = ride.details().distance();
+			long driving_time = (long)(ride.vehicle().calculateDrivingTime(driving_distance) * 1000);
+			
+			try {
+				Thread.sleep(driving_time);
+			} catch (InterruptedException e) {}
+			
+			
+			// update total distance
+			total_distance += driving_distance;
+			
+		}
+	
+	
+	// drop passenger and calculate profit
+	private void endRide(ReadyRide ride) {
 		
-		double driving_distance = ride.details().distance();
-		long driving_time = (long)(ride.vehicle().calculateDrivingTime(driving_distance) * 1000);
+		// drop passenger
+		dropPassenger();
 		
-		try {
-			Thread.sleep(driving_time);
-		} catch (InterruptedException e) {}
+		//calculate profit
+		calculateProfit(ride);
 		
 	}
 	
 	
-	// dropping passenger
-	private void drop(Customer passenger) {
+	// dropping passenger and getting rating
+		private void dropPassenger() {
+			
+			// simulate
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {}
+					
+		}
+	
+	
+	//calculate profit
+	private void calculateProfit(ReadyRide ride) {
 		
-		// simulate
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {}
+		Customer passenger = ride.details().customer();
+		double P = (Math.random() * 0.5) + 0.5;
 		
 		// get rating
 		int rating = passenger.giveRating();
+
 		
-		// calculate profit
+		double distance = ride.details().distance();
+		double time = ride.vehicle().calculateDrivingTime(distance);
+		
+		double customer_payment = passenger.pay(time, ride.vehicle().fare());
+		double profit = (customer_payment + rating) - (time * P);
+
+		total_profit += profit;
 	}
 	
-
 
 }
