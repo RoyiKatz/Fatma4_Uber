@@ -15,65 +15,55 @@ public class Clerk  extends Employee implements Runnable{
 		this.special_requests = special_requests;
 		this.calls = calls;
 		this.customers = customers;
+		requests_left = 100;
 	}
 
 	@Override
 	public void run() {
-		
+
 		// while not finished
 		while (requests_left > 0) {
 			//continue working
 			work();
 		}
-		
+
 		// finished the day - notify other clerks
-		this.notifyAll();;
 
 	}
-	
-	
+
+
 	// try to grab a request
 	private void work() {
-		// while there's no requests
-				while (requests.isEmpty()) {
-					// wait
-					try {
-						this.wait();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+		try {
 
-				// if there's a request, try to grab it
-				Request request = requests.remove();
-				checkRequest(request);
+			Request request = requests.extract();
+			System.out.println(id + " caught a request");
+			checkRequest(request);
+
+		} catch(InterruptedException e) {}
+
 	}
 
 
 	// check a request
 	private void checkRequest(Request request) {
 
-		// check customer
-		Customer c = findCustomer(request.customerID());
-		if (c == null) {
+		// if the customer doesn't exist
+		if (findCustomer(request.customerID()) == null) {
 			// create a new customer and add to company
-			c = new Customer(request.customerID());
-			customers.add(c);
+			createCustomerFrom(request.customerID());
 		}
 
 		// check distance
 		if (request.distance() < 100) {
+
 			makeServiceCallFrom(request);
+
 		} else {
+
 			// move request to manager
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			special_requests.add(request);
+			sendToManager(request);
+
 		}
 	}
 
@@ -92,27 +82,56 @@ public class Clerk  extends Employee implements Runnable{
 
 	}
 
+	// create a customer from a given id
+	private void createCustomerFrom(int id) {
+		Customer c = new Customer(id);
+		customers.add(c);
+	}
+
+
 	// make a service call from a request
 	private void makeServiceCallFrom(Request request) {
+
+		// get variables
 		Customer c = findCustomer(request.customerID());
 		String service = request.type();
 		String area = request.area();
 		double distance = request.distance();
 
-		ServiceCall call = new ServiceCall(0 /*change*/, c, service, area, distance);
-		
 		//sleep
+		try {
+			Thread.sleep(request.time());
+		} catch (InterruptedException e) {}
+
 		
+		// create service call
+		ServiceCall call = new ServiceCall(calls.getID(), c, service, area, distance);
 
 		// add call to queue
-		calls.add(call);
-		// notify to request it's finished
-		request.notify();
+		calls.insert(call);
+
+		/* don't forget to remove */
+		System.out.println("new call: no. " + call.id());
+		/**/
+
+		// terminate request
 		requests_left--;
-		
+
 		// get payed;
-		wage +=4 ;
+		wage += 4 ;
 	}
 
 
+	// send a request to the manager
+	private void sendToManager(Request request) {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {}
+
+		special_requests.insert(request);
+
+		/* don't forget to remove */
+		System.out.println("sent to manager - " + special_requests.size());
+		/**/
+	}
 }
