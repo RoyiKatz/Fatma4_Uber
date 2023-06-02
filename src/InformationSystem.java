@@ -23,19 +23,18 @@ public class InformationSystem {
 	}
 
 
-	// getters
-	public UnboundedBuffer<ServiceCall> deliveryCalls(){
-		return delivery_calls;
-	}
-
-	public UnboundedBuffer<ServiceCall> taxiCalls(){
-		return taxi_calls;
-	}
-
-
 	// is empty
 	public boolean isEmpty() {
 		return delivery_calls.isEmpty() && taxi_calls.isEmpty();
+	}
+	
+	
+	// extract a service call from a given list (Delivery/Taxi)
+	public synchronized ServiceCall extract(String list) throws InterruptedException {
+		while (this.isEmpty()) {
+			this.wait();
+		}
+		return (list.equals("Taxi")) ? taxi_calls.extract() : delivery_calls.extract();
 	}
 
 }

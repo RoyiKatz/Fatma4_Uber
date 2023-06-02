@@ -28,7 +28,6 @@ public class Clerk  extends Employee implements Runnable{
 		}
 
 		// finished the day - notify other clerks
-
 	}
 
 
@@ -46,7 +45,7 @@ public class Clerk  extends Employee implements Runnable{
 
 	// check a request
 	private void checkRequest(Request request) {
-
+		
 		// if the customer doesn't exist
 		if (findCustomer(request.customerID()) == null) {
 			// create a new customer and add to company
@@ -70,9 +69,9 @@ public class Clerk  extends Employee implements Runnable{
 	// find a customer by id
 	private Customer findCustomer(int id) {
 
-		for (Customer customer : customers) {
-			if (customer.id() == id) {
-				return customer;
+		for (int i = 0; i < customers.size(); i++) {
+			if (customers.get(i).id() == id) {
+				return customers.get(i);
 			}
 		}
 

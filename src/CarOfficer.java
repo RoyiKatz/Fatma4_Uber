@@ -4,6 +4,7 @@ public class CarOfficer extends Employee implements Runnable {
 
 	private InformationSystem IS;
 	private BoundedBuffer<ReadyRide> rides;
+	private boolean work = true;	// for testing
 
 	public CarOfficer(int id, InformationSystem info_sys, BoundedBuffer<ReadyRide> rides) {
 		super(id);
@@ -14,12 +15,10 @@ public class CarOfficer extends Employee implements Runnable {
 	@Override
 	public void run() {
 
-		while (IS.isEmpty()) {
-
-		}
-
 		// attempt to grab a call
-		grabCall();
+		while (work) {
+			grabCall();
+		}
 
 	}
 
@@ -27,23 +26,22 @@ public class CarOfficer extends Employee implements Runnable {
 	//grab a call
 	private void grabCall() {
 
-
-		UnboundedBuffer<ServiceCall> calls = chooseCalls();
+		String coice = chooseBuffer();
 
 		// grab a call
 		try {
-			ServiceCall call = calls.extract();
+			ServiceCall call = IS.extract(coice);
 			makeRideFrom(call);
 		} catch (InterruptedException e) {}
-		
+
 	}
-	
-	
+
+
 	// choose service calls queue from information system
-	private UnboundedBuffer<ServiceCall> chooseCalls(){
+	private String chooseBuffer(){
 		double chance = Math.random();
 
-		return (chance < 0.5) ? IS.deliveryCalls() : IS.taxiCalls();
+		return (chance < 0.5) ? "Delivery" : "Taxi";
 	}
 
 

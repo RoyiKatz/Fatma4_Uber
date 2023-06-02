@@ -1,43 +1,52 @@
+import java.util.Vector;
 
 public class Manager extends Thread {
 
 	private UnboundedBuffer<Request> requests;
 	private InformationSystem IS;
-	boolean day_not_over =  true;		// for tests
-	
-	
+	private Vector<Customer> customers;
+	private int expected_calls, finished_drives;
+
+
 	// constructor
-	public Manager(UnboundedBuffer<Request> requests, InformationSystem IS) {
+	public Manager(UnboundedBuffer<Request> requests, InformationSystem IS,
+			Vector<Customer> customers, int expected_calls) {
+		
 		this.requests = requests;
 		this.IS = IS;
+		this.customers = customers;
+		finished_drives = 0;
+		this.expected_calls = expected_calls;
 	}
-	
-	
+
+
 	public void run() {
-		
-		while(day_not_over) {
+
+		while(finished_drives < expected_calls) {
 			try {
-				
+
 				Request request = requests.extract();
-				
-				// make service call
-				ServiceCall call = makeServiceCallFrom(request);
-				
-				// find a vehicle
-				Vehicle v = findVehicle();
 				
 				// sleep - 3 seconds
 				Thread.sleep(3000);
-				
+
+				// make service call
+				ServiceCall call = makeServiceCallFrom(request);
+
+				// find a vehicle
+				Vehicle v = findVehicle();
+
 				// insert call to IS
 				IS.addCall(call);
-				
+
 				//print message
-				
+				printCall(call);
+
 				//terminate request
-				
+
 			} catch (InterruptedException e) {}
-			
+
+			// notify everybody to finish
 		}
 	}
 
@@ -48,10 +57,50 @@ public class Manager extends Thread {
 	}
 
 
+	// make a service call from a request
 	private ServiceCall makeServiceCallFrom(Request request) {
-		// TODO Auto-generated method stub
+
+		// get variables
+		Customer c = findCustomer(request.customerID());
+		String service = request.type();
+		String area = request.area();
+		double distance = request.distance();
+
+		//sleep
+		try {
+			Thread.sleep(request.time());
+		} catch (InterruptedException e) {}
+
+
+		// create service call
+		return new ServiceCall(requests.getID(), c, service, area, distance);
+
+	}
+
+	// find a customer by id
+	private Customer findCustomer(int id) {
+
+		for (int i = 0; i < customers.size(); i++) {
+			if (customers.get(i).id() == id) {
+				return customers.get(i);
+			}
+		}
+
+		// if we didn't find the customer
 		return null;
+
+	}
+
+	// call announcement
+	private void printCall(ServiceCall call) {
+		System.out.println("New Special Service Call (id: " + call.id() + ") Arrived, distance: " + call.distance());
 	}
 	
+	
+	// update a finished drive
+	public void updateDrive() {
+		finished_drives++;
+	}
+
 
 }

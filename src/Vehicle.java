@@ -35,20 +35,14 @@ public abstract class Vehicle {
 	public String model() {
 		return model;
 	}
-	
+
 	public double fare() {
 		return base_fare;
 	}
 
 
 	// calculate driving time based on a given distance
-	public double calculateDrivingTime(double distance) {
-
-		double P = 0.5 + (Math.random() * 0.2);
-
-		return (distance / (100 * P)) + 2;
-
-	}
+	public abstract double calculateDrivingTime(double distance);
 
 	//return a string representation of the type of vehicle
 	abstract protected String getType();

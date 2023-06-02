@@ -4,13 +4,15 @@ public class Driver extends Employee implements Runnable{
 	private char license;
 	private BoundedBuffer<ReadyRide> rides;
 	private double total_profit, total_distance;
+	private Manager manager;
 	
-	public Driver(int id, char license, BoundedBuffer<ReadyRide> rides) {
+	public Driver(int id, char license, BoundedBuffer<ReadyRide> rides, Manager manager) {
 		super(id);
 		this.license = license;
 		this.rides = rides;
 		total_distance = 0;
 		total_profit = 0;
+		this.manager = manager;
 	}
 	
 	
@@ -84,6 +86,9 @@ public class Driver extends Employee implements Runnable{
 		
 		//calculate profit
 		calculateProfit(ride);
+		
+		// alert manager
+		manager.updateDrive();
 		
 	}
 	
