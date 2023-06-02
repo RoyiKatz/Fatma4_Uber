@@ -5,7 +5,6 @@ public class Clerk  extends Employee implements Runnable{
 	private UnboundedBuffer<Request> requests, special_requests;
 	private UnboundedBuffer<ServiceCall> calls;
 	private Vector<Customer> customers;
-	private int requests_left;
 
 	public Clerk(int id, UnboundedBuffer<Request> requests, UnboundedBuffer<Request> special_requests
 			, UnboundedBuffer<ServiceCall> calls, Vector<Customer> customers) {
@@ -15,19 +14,19 @@ public class Clerk  extends Employee implements Runnable{
 		this.special_requests = special_requests;
 		this.calls = calls;
 		this.customers = customers;
-		requests_left = 100;
 	}
 
 	@Override
 	public void run() {
 
 		// while not finished
-		while (requests_left > 0) {
+		while (not_finished) {
 			//continue working
 			work();
 		}
 
 		// finished the day - notify other clerks
+		System.out.println("clerk " + id + " finished");
 	}
 
 
@@ -45,7 +44,7 @@ public class Clerk  extends Employee implements Runnable{
 
 	// check a request
 	private void checkRequest(Request request) {
-		
+				
 		// if the customer doesn't exist
 		if (findCustomer(request.customerID()) == null) {
 			// create a new customer and add to company
@@ -109,8 +108,8 @@ public class Clerk  extends Employee implements Runnable{
 		calls.insert(call);
 
 		// terminate request
-		requests_left--;
-
+		request.stop();
+		
 		// get payed;
 		wage += 4 ;
 	}

@@ -4,7 +4,6 @@ public class Scheduler extends Employee implements Runnable {
 	private String area;
 	private UnboundedBuffer<ServiceCall> calls;
 	private InformationSystem IS;
-	private boolean work = true;		/* for testing */
 
 
 	public Scheduler(int id, String area, UnboundedBuffer<ServiceCall> calls, InformationSystem IS) {
@@ -17,7 +16,7 @@ public class Scheduler extends Employee implements Runnable {
 
 	@Override
 	public void run() {
-		while(work) {
+		while(not_finished) {
 			
 			try {
 				ServiceCall call = calls.extract();

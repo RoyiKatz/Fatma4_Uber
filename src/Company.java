@@ -13,6 +13,7 @@ public class Company {
 	private Vector<Driver> drivers;
 	private Vector<Vehicle> vehicles;
 	private Vector<Customer> customers;
+	private Vector<Employee> employees;
 
 	private UnboundedBuffer<Request> requests, special_requests;
 	private UnboundedBuffer<ServiceCall> calls;
@@ -21,6 +22,9 @@ public class Company {
 	private Vector<Thread> t;
 
 	public Company() {
+		
+		employees = new Vector<Employee>();
+		
 		IS = new InformationSystem();
 
 		// group all the threads together
@@ -37,18 +41,20 @@ public class Company {
 		for (int i = 1; i < 5; i++) {
 			Driver d;
 			if (i % 2 == 0) {
-				d = new Driver(i, 'A', rides, manager);
+				d = new Driver(i, 'A', rides);
 			} else {
-				d = new Driver(i, 'B', rides, manager);
+				d = new Driver(i, 'B', rides);
 			}
 			drivers.add(d);
 			t.add(new Thread(d));
 		}
+		employees.addAll(0, drivers);
 
 		clerk = new Clerk[3];
 		for (int i = 0; i < 3; i++) {
 			clerk[i] = new Clerk(i+1, requests, special_requests, calls, customers);
 			t.add(new Thread(clerk[i]));
+			employees.add(clerk[i]);
 		}
 
 		scheduler = new Scheduler[2];
@@ -56,16 +62,19 @@ public class Company {
 			String area = (i == 1) ? "Tel Aviv" : "Jerusalem";
 			scheduler[i] = new Scheduler(i+1, area, calls, IS);
 			t.add(new Thread(scheduler[i]));
+			employees.add(scheduler[i]);
 		}
 
 		car_officer = new CarOfficer[3];
 		for (int i = 0; i < 3; i++) {
 			car_officer[i] = new CarOfficer(i+1, IS, rides);
 			t.add(new Thread(car_officer[i]));
+			employees.add(car_officer[i]);
 		}
 
-		manager = new Manager(special_requests, IS, customers, 100 /*change*/);
+		manager = new Manager(special_requests, IS, customers, 100 /*change*/, employees);
 		t.add(manager);
+		
 
 	}
 

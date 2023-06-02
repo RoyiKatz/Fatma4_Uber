@@ -6,17 +6,19 @@ public class Manager extends Thread {
 	private InformationSystem IS;
 	private Vector<Customer> customers;
 	private int expected_calls, finished_drives;
+	private Vector<Employee> employees;
 
 
 	// constructor
 	public Manager(UnboundedBuffer<Request> requests, InformationSystem IS,
-			Vector<Customer> customers, int expected_calls) {
-		
+			Vector<Customer> customers, int expected_calls, Vector<Employee> employees) {
+
 		this.requests = requests;
 		this.IS = IS;
 		this.customers = customers;
 		finished_drives = 0;
 		this.expected_calls = expected_calls;
+		this.employees = employees;
 	}
 
 
@@ -26,7 +28,7 @@ public class Manager extends Thread {
 			try {
 
 				Request request = requests.extract();
-				
+
 				// sleep - 3 seconds
 				Thread.sleep(3000);
 
@@ -43,11 +45,18 @@ public class Manager extends Thread {
 				printCall(call);
 
 				//terminate request
+				request.stop();
 
 			} catch (InterruptedException e) {}
 
-			// notify everybody to finish
 		}
+
+		// notify everybody to finish
+		for(Employee employee: employees) {
+			employee.finishWorkDay();
+
+		}
+
 	}
 
 
@@ -95,8 +104,8 @@ public class Manager extends Thread {
 	private void printCall(ServiceCall call) {
 		System.out.println("New Special Service Call (id: " + call.id() + ") Arrived, distance: " + call.distance());
 	}
-	
-	
+
+
 	// update a finished drive
 	public void updateDrive() {
 		finished_drives++;

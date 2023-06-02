@@ -19,6 +19,8 @@ public class InformationSystem {
 		} else {
 			delivery_calls.insert(call);
 		}
+		
+		this.notifyAll();
 
 	}
 
@@ -31,6 +33,7 @@ public class InformationSystem {
 	
 	// extract a service call from a given list (Delivery/Taxi)
 	public synchronized ServiceCall extract(String list) throws InterruptedException {
+		
 		while (this.isEmpty()) {
 			this.wait();
 		}

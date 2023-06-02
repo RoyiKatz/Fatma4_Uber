@@ -4,7 +4,6 @@ public class CarOfficer extends Employee implements Runnable {
 
 	private InformationSystem IS;
 	private BoundedBuffer<ReadyRide> rides;
-	private boolean work = true;	// for testing
 
 	public CarOfficer(int id, InformationSystem info_sys, BoundedBuffer<ReadyRide> rides) {
 		super(id);
@@ -16,7 +15,7 @@ public class CarOfficer extends Employee implements Runnable {
 	public void run() {
 
 		// attempt to grab a call
-		while (work) {
+		while (not_finished) {
 			grabCall();
 		}
 
@@ -59,7 +58,9 @@ public class CarOfficer extends Employee implements Runnable {
 
 	private Vehicle findVehicle() {
 		// TODO Auto-generated method stub
-		return null;
+		//return null;
+		
+		return new Motorcycle(123, "toyota", 2000, 100);
 	}
 
 }
