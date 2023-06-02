@@ -25,20 +25,14 @@ public class Request extends Call implements Runnable {
 		return customer_id;
 	}
 	
-	public double time() {
-		return working_time;
+	public long time() {
+		long time = (long)(working_time * 1000);
+		return time;
 	}
 	
 	public long arrivalTime() {
 		long time = (long)(arrival_time * 1000);
 		return time;
-	}
-	
-	
-	// add request to queue
-	private synchronized void addToQueue() {
-		requests.add(this);
-		requests.notifyAll();
 	}
 
 	
@@ -47,21 +41,14 @@ public class Request extends Call implements Runnable {
 		// sleep
 		try {
 			Thread.sleep(arrivalTime());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (InterruptedException e) {}
+		
 		
 		// adding to request queue
-		addToQueue();
+		requests.insert(this);
+		
 		
 		// wait for request to be processed
-		try {
-			this.wait();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	
