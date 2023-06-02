@@ -4,6 +4,7 @@ public class Request extends Call implements Runnable {
 	private int customer_id;
 	private double arrival_time, working_time;
 	private UnboundedBuffer<Request> requests;
+	private boolean processing;
 	
 	
 	// constructor
@@ -16,6 +17,7 @@ public class Request extends Call implements Runnable {
 		arrival_time = arrival;
 		this.working_time = working_time;
 		this.requests = requests;
+		processing = true;
 		
 	}
 	
@@ -47,9 +49,25 @@ public class Request extends Call implements Runnable {
 		// adding to request queue
 		requests.insert(this);
 		
-		
 		// wait for request to be processed
+		while(processing) {
+			waitForFinish();
+		}
+	}	
+	
+	private synchronized void waitForFinish() {
+
+		try {
+			this.wait();
+		} catch (InterruptedException e) {}
+		
 	}
+
 	
-	
+	// stop processing state and terminate thread
+	public synchronized void stop() {
+		processing = false;
+		this.notify();
+	}
+
 }
