@@ -30,33 +30,62 @@ public class Driver extends Employee implements Runnable{
 
 	@Override
 	public void run() {
-		while (rides.isEmpty()) {
-			try {
-				this.wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		
 		// try to grab a ride
-		grabDrive();
+		try {
+			grabDrive();
+		} catch (InterruptedException e) {}
 		
 	}
 	
 	
 	// try to grab a ride
-	private synchronized void grabDrive() {
-		ReadyRide ride = rides.remove();
+	private void grabDrive() throws InterruptedException {
+		ReadyRide ride = rides.extcract();
 		
 		if (licenseMatch(ride.vehicle())) {
-			// drive
+			// simulate drive
+			drive(ride);
+			
+			// dropping passenger
+			Customer passenger = ride.details().customer();
+			drop(passenger);
+			
+			// returning vehicle
 			
 		} else {
-			rides.add(ride);
+			// license doesn't match
+			rides.insert(ride);
 		}
 	}
 	
+	
+	// simulate drive
+	private void drive(ReadyRide ride) {
+		
+		double driving_distance = ride.details().distance();
+		long driving_time = (long)(ride.vehicle().calculateDrivingTime(driving_distance) * 1000);
+		
+		try {
+			Thread.sleep(driving_time);
+		} catch (InterruptedException e) {}
+		
+	}
+	
+	
+	// dropping passenger
+	private void drop(Customer passenger) {
+		
+		// simulate
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
+		
+		// get rating
+		int rating = passenger.giveRating();
+		
+		// calculate profit
+	}
 	
 
 
