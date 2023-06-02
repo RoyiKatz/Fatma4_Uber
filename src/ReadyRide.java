@@ -16,4 +16,8 @@ public class ReadyRide {
 	public Vehicle vehicle() {
 		return vehicle;
 	}
+	
+	public ServiceCall details() {
+		return order;
+	}
 }

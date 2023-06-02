@@ -15,4 +15,10 @@ public class Customer {
 		return id;
 	}
 	
+	
+	// give rating
+	public int giveRating() {	
+		return (int)(Math.random() * 10) + 1;
+	}
+	
 }

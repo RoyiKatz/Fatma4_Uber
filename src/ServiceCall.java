@@ -18,6 +18,10 @@ public class ServiceCall extends Call implements Comparable<ServiceCall> {
 	public int id() {
 		return id;
 	}
+	
+	public Customer customer() {
+		return customer;
+	}
 		
 	
 	@Override
