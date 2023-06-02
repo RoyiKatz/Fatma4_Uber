@@ -3,67 +3,62 @@ public class Scheduler extends Employee implements Runnable {
 
 	private String area;
 	private UnboundedBuffer<ServiceCall> calls;
-	private InformationSystem info_system;
+	private InformationSystem IS;
+	private boolean work = true;		/* for testing */
 
-	
-	public Scheduler(int id, String area, UnboundedBuffer<ServiceCall> calls, InformationSystem info_system) {
+
+	public Scheduler(int id, String area, UnboundedBuffer<ServiceCall> calls, InformationSystem IS) {
 		super(id);
 		this.area = area;
 		this.calls = calls;
-		this.info_system = info_system;
+		this.IS = IS;
 	}
 
 
 	@Override
 	public void run() {
-		
-		// while there are no calls
-		while(calls.isEmpty()) {
+		while(work) {
+			
 			try {
-				this.wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				ServiceCall call = calls.extract();
+				checkCall(call);
+			} catch (InterruptedException e) {}
+			
 		}
-		
-		// there are calls
-		ServiceCall call = calls.remove();
-		checkCall(call);
-		
+
 	}
-	
-	
+
+
 	// check a service call
 	private void checkCall(ServiceCall call) {
-		
+
 		// check area
 		if (area.equals(call.area())) {
 			// find and remove vehicle
 			findVehicle();
-			
+
 			// sleep
-			
-			
+
+
 			// adding to IS
-			info_system.addCall(call);
+			IS.addCall(call);
 			printCall(call);
-			
+
 		} else {
-			calls.add(call);
+			// area doesn't match
+			calls.insert(call);
 		}
 	}
-	
+
 	// find vehicle for a call
 	private void findVehicle() {
 		//TODO
 	}
-	
-	
+
+
 	// call announcement
 	private void printCall(ServiceCall call) {
-		System.out.println("New service call arrived and data inserted to database");
-		System.out.println("Call no. " + call.id());
+		System.out.println("New service call (id: " + call.id() + ") arrived and data inserted to database");
 	}
-	
+
 }
