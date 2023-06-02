@@ -37,7 +37,6 @@ public class Clerk  extends Employee implements Runnable{
 		try {
 
 			Request request = requests.extract();
-			System.out.println(id + " caught a request");
 			checkRequest(request);
 
 		} catch(InterruptedException e) {}
@@ -110,10 +109,6 @@ public class Clerk  extends Employee implements Runnable{
 		// add call to queue
 		calls.insert(call);
 
-		/* don't forget to remove */
-		System.out.println("new call: no. " + call.id());
-		/**/
-
 		// terminate request
 		requests_left--;
 
@@ -130,8 +125,5 @@ public class Clerk  extends Employee implements Runnable{
 
 		special_requests.insert(request);
 
-		/* don't forget to remove */
-		System.out.println("sent to manager - " + special_requests.size());
-		/**/
 	}
 }

@@ -1,7 +1,7 @@
 
 public class InformationSystem {
 
-	private UnboundedBuffer<ServiceCall> delivery_calls, taxi_calls; //check for better way
+	private UnboundedBuffer<ServiceCall> delivery_calls, taxi_calls;
 
 
 	// constructor
