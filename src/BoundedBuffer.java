@@ -25,10 +25,22 @@ public class BoundedBuffer<T> extends UnboundedBuffer<T> {
 
 
 	// add element
-	public boolean add(T item) {
-		if (this.size() < limit) {
-			super.add(item);
+	public synchronized void insert(T item) {
+		while (this.isFull()) {
+			
+			try {
+				this.wait();
+			} catch (InterruptedException e) {}
+			
 		}
-		return false;
+		super.insert(item);
 	}
+	
+	// extract element
+	public synchronized T extcract() throws InterruptedException {
+		T item = super.extract();
+		this.notifyAll();
+		return item;
+	}
+
 }

@@ -1,59 +1,47 @@
-import java.util.Iterator;
 import java.util.Vector;
 
-public class UnboundedBuffer<T> implements Iterable<T>{
 
-protected Vector<T> queue;
-	
-	
+public class UnboundedBuffer<T>{
+
+	protected Vector<T> queue;
+	protected int last_id; 		//to generate unique id
+
+
 	// constructor
 	public UnboundedBuffer(){
 		queue = new Vector<T>();
+		last_id = 1;
 	}
-	
-	
+
+
 	// size
 	public int size() {
 		return queue.size();
 	}
-	
+
 	// isEmpty
 	public boolean isEmpty() {
 		return queue.isEmpty();
 	}
-	
-	
-	// get elements
-	public T get(int index) {
-		return queue.get(index);
-	}
-	
-	public T getFirst() {
-		return queue.firstElement();
-	}
-	
-	public T getLast() {
-		return queue.lastElement();
-	}
-	
-	
+
 	// add element
-	public boolean add(T item) {
+	public synchronized void insert(T item) {
 		queue.add(item);
-		return true;
-	}
-	
-	// remove element
-	public T remove() {
-		T first = queue.get(0);
-		queue.remove(0);
-		return first;
+		last_id++;
+		this.notifyAll();
 	}
 
-
-	@Override
-	public Iterator<T> iterator() {
-		return queue.iterator();
+	// extract element
+	public synchronized T extract() throws InterruptedException {
+		while (queue.isEmpty()) {
+			this.wait();
+		}
+		return queue.remove(0);
 	}
 	
+	// generate unique id
+	public synchronized int getID() {
+		return last_id;
+	}
+
 }
