@@ -2,25 +2,24 @@
 
 public class CarOfficer extends Employee implements Runnable {
 
-	private InformationSystem info_sys;
+	private InformationSystem IS;
 	private BoundedBuffer<ReadyRide> rides;
 
 	public CarOfficer(int id, InformationSystem info_sys, BoundedBuffer<ReadyRide> rides) {
 		super(id);
-		this.info_sys = info_sys;
+		this.IS = info_sys;
 		this.rides = rides;
 	}
 
 	@Override
 	public void run() {
 
-		while (info_sys.isEmpty()) {
+		while (IS.isEmpty()) {
+
 			try {
 				this.wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} catch (InterruptedException e) {}
+
 		}
 
 		// attempt to grab a call
@@ -32,48 +31,36 @@ public class CarOfficer extends Employee implements Runnable {
 	//grab a call
 	private void grabCall() {
 
-		ServiceCall call = null;
 
-		double chance = Math.random();
+		UnboundedBuffer<ServiceCall> calls = chooseCalls();
 
-		// check chance
-		if (chance < 0.5) {
-			if (!info_sys.deliveryCalls().isEmpty()) {
-				call = info_sys.deliveryCalls().remove();
-			}
-		} else {
-			if (!info_sys.taxiCalls().isEmpty()) {
-				call = info_sys.taxiCalls().remove();
-			}
-		}
-		
-		// if managed to grab a call
-		if (call != null) {
+		// grab a call
+		try {
+			ServiceCall call = calls.extract();
 			makeRideFrom(call);
-		}
+		} catch (InterruptedException e) {}
+		
 	}
 	
 	
+	// choose service calls queue from information system
+	private UnboundedBuffer<ServiceCall> chooseCalls(){
+		double chance = Math.random();
+
+		return (chance < 0.5) ? IS.deliveryCalls() : IS.taxiCalls();
+	}
+
+
 	// make a ride from a service call
 	private void makeRideFrom(ServiceCall call) {
 		// getting a car
 		Vehicle v = findVehicle();
-		
+
 		// creating instance of ReadyRide
 		ReadyRide ride = new ReadyRide(call, v);
-		
-		// adding ride to queue
-		while (rides.isFull()) {
-			try {
-				this.wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		rides.add(ride);
-		
+
+		rides.insert(ride);
+
 	}
 
 	private Vehicle findVehicle() {
