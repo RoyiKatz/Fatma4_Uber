@@ -16,10 +16,6 @@ public class CarOfficer extends Employee implements Runnable {
 
 		while (IS.isEmpty()) {
 
-			try {
-				this.wait();
-			} catch (InterruptedException e) {}
-
 		}
 
 		// attempt to grab a call
