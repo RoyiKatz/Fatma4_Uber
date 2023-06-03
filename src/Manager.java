@@ -26,7 +26,23 @@ public class Manager extends Thread {
 			work();
 		}
 
-		// notify everybody to finish
+		endDay();
+	}
+
+
+	private void endDay() {
+		
+		// notify schedulers, drivers, car officers
+		
+		// print the total wage of the schedulers, car officers, drivers
+		
+		// print the average employee wage
+		
+		// print the number of deliveries, taxi rides
+		
+		// print the most popular service area
+
+		// finish
 		System.out.println("Manager finished");
 	}
 
@@ -84,6 +100,7 @@ public class Manager extends Thread {
 
 	}
 
+	
 	// find a customer by id
 	private Customer findCustomer(int id) {
 
@@ -98,6 +115,7 @@ public class Manager extends Thread {
 
 	}
 
+	
 	// call announcement
 	private void printCall(ServiceCall call) {
 		System.out.println("New Special Service Call (id: " + call.id() + ") Arrived, distance: " + call.distance());
