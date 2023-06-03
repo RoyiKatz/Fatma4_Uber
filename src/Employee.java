@@ -20,6 +20,9 @@ public abstract class Employee {
 	}
 	
 	
+	protected abstract void work();
+	
+	
 	// finish work day
 	public synchronized void finishWorkDay() {
 		not_finished = false;
