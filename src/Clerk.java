@@ -18,6 +18,7 @@ public class Clerk  extends Employee implements Runnable{
 
 	}
 
+	
 	@Override
 	public void run() {
 
@@ -29,6 +30,7 @@ public class Clerk  extends Employee implements Runnable{
 
 		// finished the day - notify other clerks
 		System.out.println("clerk " + id + " finished");
+		notifyAllClerks();
 	}
 
 
@@ -36,8 +38,11 @@ public class Clerk  extends Employee implements Runnable{
 	protected void work() {
 		try {
 
+			// grab a request and count it
 			Request request = requests.extract();	
 			expected_requests--;
+			
+			// check the request
 			checkRequest(request);
 
 			// if this is the last request
@@ -50,9 +55,8 @@ public class Clerk  extends Employee implements Runnable{
 	}
 
 
-	// finish the day and alert other clerks
-	public synchronized void finishWorkDay() {
-		not_finished = false;
+	// alert other clerks the day is over
+	private synchronized void notifyAllClerks() {
 		notifyAll();
 	}
 

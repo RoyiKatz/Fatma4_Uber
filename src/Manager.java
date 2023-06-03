@@ -33,6 +33,7 @@ public class Manager extends Thread {
 
 	private void work() {
 		try {
+			// get request
 			Request request = requests.extract();
 
 			// sleep - 3 seconds
@@ -100,12 +101,6 @@ public class Manager extends Thread {
 	// call announcement
 	private void printCall(ServiceCall call) {
 		System.out.println("New Special Service Call (id: " + call.id() + ") Arrived, distance: " + call.distance());
-	}
-
-
-	// update a finished drive
-	public void updateDrive() {
-		finished_drives++;
 	}
 
 

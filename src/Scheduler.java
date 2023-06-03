@@ -24,6 +24,7 @@ public class Scheduler extends Employee implements Runnable {
 
 	}
 	
+	
 	protected void work() {
 		try {
 			ServiceCall call = calls.extract();
@@ -32,7 +33,7 @@ public class Scheduler extends Employee implements Runnable {
 	}
 
 
-	// check a service call
+	// check whether to accept a call or not
 	private void checkCall(ServiceCall call) {
 
 		// check area
@@ -46,6 +47,7 @@ public class Scheduler extends Employee implements Runnable {
 		}
 	}
 
+	// handke a service call
 	private void handleCall(ServiceCall call) {
 		
 		System.out.println("Scheduler " + id + " handling call " + call.id() + "...");
