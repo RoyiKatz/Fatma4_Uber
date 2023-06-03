@@ -122,6 +122,7 @@ public class Company {
 
 	private void startRequests() {
 		Vector<String> req_txt = readRequests();
+		int i = 1;
 		for (String line: req_txt) {
 			//make an array of the row element (seperated by tab)
 			String[] row = line.split("\t");
@@ -134,7 +135,8 @@ public class Company {
 			double time = Double.parseDouble(row[4]);
 			double arrival = Double.parseDouble(row[5]);
 
-			Request request = new Request(customer_id, type, area, distance, arrival, time, requests);
+			Request request = new Request(i, customer_id, type, area, distance, arrival, time, requests);
+			i++;
 			Thread r = new Thread(request);
 			r.start();
 		}
