@@ -34,6 +34,7 @@ public class Manager extends Thread {
 
 				// make service call
 				ServiceCall call = makeServiceCallFrom(request);
+				System.out.println("Manager handling call " + call.id());
 
 				// find a vehicle
 				Vehicle v = findVehicle();
@@ -82,7 +83,7 @@ public class Manager extends Thread {
 
 
 		// create service call
-		return new ServiceCall(requests.getID(), c, service, area, distance);
+		return new ServiceCall(request.id(), c, service, area, distance);
 
 	}
 

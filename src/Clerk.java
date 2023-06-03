@@ -31,7 +31,7 @@ public class Clerk  extends Employee implements Runnable{
 
 
 	// try to grab a request
-	private void work() {
+	protected void work() {
 		try {
 
 			Request request = requests.extract();
@@ -102,7 +102,7 @@ public class Clerk  extends Employee implements Runnable{
 
 		
 		// create service call
-		ServiceCall call = new ServiceCall(calls.getID(), c, service, area, distance);
+		ServiceCall call = new ServiceCall(request.id(), c, service, area, distance);
 
 		// add call to queue
 		calls.insert(call);
@@ -121,6 +121,7 @@ public class Clerk  extends Employee implements Runnable{
 			Thread.sleep(500);
 		} catch (InterruptedException e) {}
 
+		System.out.println("request " + request.id() + " transfered to manager");
 		special_requests.insert(request);
 
 	}

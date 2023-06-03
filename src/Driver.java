@@ -32,11 +32,18 @@ public class Driver extends Employee implements Runnable{
 	public void run() {
 
 		while (not_finished) {
-			// try to grab a ride
-			try {
-				grabDrive();
-			} catch (InterruptedException e) {}
+			work();
 		}
+		
+		System.out.println("Driver " + id + " finished");
+	}
+
+
+	protected void work() {
+		// try to grab a ride
+		try {
+			grabDrive();
+		} catch (InterruptedException e) {}
 	}
 
 
@@ -62,8 +69,8 @@ public class Driver extends Employee implements Runnable{
 
 	// simulate drive
 	private void drive(ReadyRide ride) {
-		
-		System.out.println("driving...");
+
+		System.out.println("Driver " + id + " driving call " + ride.details().id());
 
 		double driving_distance = ride.details().distance();
 		long driving_time = (long)(ride.vehicle().calculateDrivingTime(driving_distance) * 1000);
@@ -89,7 +96,7 @@ public class Driver extends Employee implements Runnable{
 		calculateProfit(ride);
 
 		// alert manager
-
+		System.out.println("finished drive (id: " + ride.details().id + ")");
 	}
 
 

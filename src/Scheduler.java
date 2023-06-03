@@ -17,14 +17,18 @@ public class Scheduler extends Employee implements Runnable {
 	@Override
 	public void run() {
 		while(not_finished) {
-			
-			try {
-				ServiceCall call = calls.extract();
-				checkCall(call);
-			} catch (InterruptedException e) {}
-			
+			work();
 		}
+		
+		System.out.println("Scheduler " + id + " finished");
 
+	}
+	
+	protected void work() {
+		try {
+			ServiceCall call = calls.extract();
+			checkCall(call);
+		} catch (InterruptedException e) {}
 	}
 
 
@@ -33,15 +37,8 @@ public class Scheduler extends Employee implements Runnable {
 
 		// check area
 		if (area.equals(call.area())) {
-			// find and remove vehicle
-			findVehicle();
 
-			// sleep
-			
-
-			// adding to IS
-			IS.addCall(call);
-			printCall(call);
+			handleCall(call);
 
 		} else {
 			// area doesn't match
@@ -49,9 +46,30 @@ public class Scheduler extends Employee implements Runnable {
 		}
 	}
 
+	private void handleCall(ServiceCall call) {
+		
+		System.out.println("Scheduler " + id + " handling call " + call.id() + "...");
+
+		// find and remove vehicle
+		Vehicle v = findVehicle();
+
+		// sleep
+		double time_to_sleep = v.calculateDrivingTime(call.distance()) * 25;
+		try {
+			Thread.sleep((long)time_to_sleep);
+		} catch (InterruptedException e) {}
+
+		// adding to IS
+		IS.addCall(call);
+		printCall(call);
+
+	}
+
+
 	// find vehicle for a call
-	private void findVehicle() {
+	private Vehicle findVehicle() {
 		//TODO
+		return new Taxi(123, "toyota", 2000);
 	}
 
 

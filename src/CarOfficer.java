@@ -16,20 +16,30 @@ public class CarOfficer extends Employee implements Runnable {
 
 		// attempt to grab a call
 		while (not_finished) {
-			grabCall();
+			work();
 		}
+		
+		System.out.println("Car Officer " + id + " finished");
 
+	}
+	
+	
+	@Override
+	protected void work() {
+		grabCall();
 	}
 
 
 	//grab a call
 	private void grabCall() {
 
-		String coice = chooseBuffer();
+		String choice = chooseBuffer();
+		
+		System.out.println("Car Officer " + id + " trying to grab " + choice + " call");
 
 		// grab a call
 		try {
-			ServiceCall call = IS.extract(coice);
+			ServiceCall call = IS.extract(choice);
 			makeRideFrom(call);
 		} catch (InterruptedException e) {}
 
@@ -46,6 +56,9 @@ public class CarOfficer extends Employee implements Runnable {
 
 	// make a ride from a service call
 	private void makeRideFrom(ServiceCall call) {
+		
+		System.out.println("Car Officer " + id + " is making a ride from call " + call.id());
+		
 		// getting a car
 		Vehicle v = findVehicle();
 
@@ -60,7 +73,9 @@ public class CarOfficer extends Employee implements Runnable {
 		// TODO Auto-generated method stub
 		//return null;
 		
-		return new Motorcycle(123, "toyota", 2000, 100);
+		return new Taxi(123, "toyota", 2000);
 	}
+
+	
 
 }
