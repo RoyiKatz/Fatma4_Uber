@@ -71,7 +71,7 @@ public class Driver extends Employee implements Runnable{
 
 	// simulate drive
 	private void drive(ReadyRide ride) {
-
+		
 		System.out.println("Driver " + id + " driving call " + ride.details().id());
 
 		double driving_distance = ride.details().distance();
@@ -98,8 +98,9 @@ public class Driver extends Employee implements Runnable{
 		calculateProfit(ride);
 
 		// alert manager
-		manager.updateRides();
 		System.out.println("finished drive (id: " + ride.details().id + ")");
+		manager.updateRides();
+		
 	}
 
 
