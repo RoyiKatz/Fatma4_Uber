@@ -1,23 +1,14 @@
 
-public class ReadyRide {
+public class ReadyRide extends Ride {
 
-	private ServiceCall order;
-	private Vehicle vehicle;
 	
-	
-	// constructor
+	// constructors
 	public ReadyRide(ServiceCall call, Vehicle v) {
-		order = call;
-		vehicle = v;
+		super(call, v);
 	}
 	
-	
-	// getters
-	public Vehicle vehicle() {
-		return vehicle;
+	public ReadyRide(Ride r) {
+		super(r.details(), r.vehicle());
 	}
 	
-	public ServiceCall details() {
-		return order;
-	}
 }

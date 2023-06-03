@@ -56,14 +56,17 @@ public class Scheduler extends Employee implements Runnable {
 		Vehicle v = findVehicle();
 
 		// sleep
-		double time_to_sleep = v.calculateDrivingTime(call.distance()) * 25;
+		long time_to_sleep = (long)(v.calculateDrivingTime(call.distance()) * 25);
 		try {
-			Thread.sleep((long)time_to_sleep);
+			Thread.sleep(time_to_sleep);
 		} catch (InterruptedException e) {}
 
 		// adding to IS
-		IS.addCall(call);
+		IS.addCall(new Ride(call, v));
 		printCall(call);
+		
+		// get payed
+		wage += time_to_sleep / 1000;
 
 	}
 
