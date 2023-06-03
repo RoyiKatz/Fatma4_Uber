@@ -4,13 +4,11 @@ import java.util.Vector;
 public class UnboundedBuffer<T>{
 
 	protected Vector<T> queue;
-	protected int last_id; 		//to generate unique id
 
 
 	// constructor
 	public UnboundedBuffer(){
 		queue = new Vector<T>();
-		last_id = 1;
 	}
 
 
@@ -27,7 +25,6 @@ public class UnboundedBuffer<T>{
 	// add element
 	public synchronized void insert(T item) {
 		queue.add(item);
-		last_id++;
 		this.notifyAll();
 	}
 
@@ -38,10 +35,6 @@ public class UnboundedBuffer<T>{
 		}
 		return queue.remove(0);
 	}
-	
-	// generate unique id
-	public synchronized int getID() {
-		return last_id;
-	}
+
 
 }

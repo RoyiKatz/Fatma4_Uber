@@ -8,10 +8,10 @@ public class Request extends Call implements Runnable {
 	
 	
 	// constructor
-	public Request(int customer_id, String service_type, String service_area,
+	public Request(int request_id, int customer_id, String service_type, String service_area,
 			double distance, double arrival, double working_time, UnboundedBuffer<Request> requests) {
 		
-		super(service_type, service_area, distance);
+		super(request_id, service_type, service_area, distance);
 
 		this.customer_id = customer_id;
 		arrival_time = arrival;
@@ -53,6 +53,7 @@ public class Request extends Call implements Runnable {
 		while(processing) {
 			waitForFinish();
 		}
+		
 	}	
 	
 	private synchronized void waitForFinish() {

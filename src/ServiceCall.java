@@ -1,24 +1,17 @@
 
 public class ServiceCall extends Call implements Comparable<ServiceCall> {
 
-	private int id;
 	private Customer customer;
 	
 	public ServiceCall(int id, Customer customer, String service_type, String service_area, double distance) {
 		
-		super(service_type, service_area, distance);
+		super(id, service_type, service_area, distance);
 		
-		this.id = id;
 		this.customer = customer;
-		
 	}
 	
 	
 	// getter
-	public int id() {
-		return id;
-	}
-	
 	public Customer customer() {
 		return customer;
 	}
