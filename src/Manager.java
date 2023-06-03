@@ -6,58 +6,54 @@ public class Manager extends Thread {
 	private InformationSystem IS;
 	private Vector<Customer> customers;
 	private int expected_calls, finished_drives;
-	private Vector<Employee> employees;
 
 
 	// constructor
 	public Manager(UnboundedBuffer<Request> requests, InformationSystem IS,
-			Vector<Customer> customers, int expected_calls, Vector<Employee> employees) {
+			Vector<Customer> customers, int expected_calls) {
 
 		this.requests = requests;
 		this.IS = IS;
 		this.customers = customers;
 		finished_drives = 0;
 		this.expected_calls = expected_calls;
-		this.employees = employees;
 	}
 
 
 	public void run() {
 
 		while(finished_drives < expected_calls) {
-			try {
-
-				Request request = requests.extract();
-
-				// sleep - 3 seconds
-				Thread.sleep(3000);
-
-				// make service call
-				ServiceCall call = makeServiceCallFrom(request);
-				System.out.println("Manager handling call " + call.id());
-
-				// find a vehicle
-				Vehicle v = findVehicle();
-
-				// insert call to IS
-				IS.addCall(call);
-
-				//print message
-				printCall(call);
-
-				//terminate request
-				request.stop();
-
-			} catch (InterruptedException e) {}
-
+			work();
 		}
 
 		// notify everybody to finish
-		for(Employee employee: employees) {
-			employee.finishWorkDay();
+		System.out.println("Manager finished");
+	}
 
-		}
 
+	private void work() {
+		try {
+			Request request = requests.extract();
+
+			// sleep - 3 seconds
+			Thread.sleep(3000);
+
+			// make service call
+			ServiceCall call = makeServiceCallFrom(request);
+			System.out.println("Manager handling call " + call.id());
+
+			// find a vehicle
+			Vehicle v = findVehicle();
+
+			// insert call to IS
+			IS.addCall(call);
+
+			//print message
+			printCall(call);
+
+			//terminate request
+			request.stop();
+		} catch (InterruptedException e) {}
 	}
 
 
@@ -110,6 +106,13 @@ public class Manager extends Thread {
 	// update a finished drive
 	public void updateDrive() {
 		finished_drives++;
+	}
+
+
+	// update rides whenever a driver finishes a ride
+	public synchronized void updateRides() {
+		finished_drives++;
+		notify();
 	}
 
 

@@ -36,14 +36,18 @@ public class Company {
 		rides = new BoundedBuffer<ReadyRide>();
 		vehicles = new Vector<Vehicle>();
 		customers = new Vector<Customer>();
+		
+		manager = new Manager(special_requests, IS, customers, 100 /*change*/);
+		t.add(manager);
+
 
 		drivers = new Vector<Driver>();
 		for (int i = 1; i < 5; i++) {
 			Driver d;
 			if (i % 2 == 0) {
-				d = new Driver(i, 'A', rides);
+				d = new Driver(i, 'A', rides, manager);
 			} else {
-				d = new Driver(i, 'B', rides);
+				d = new Driver(i, 'B', rides, manager);
 			}
 			drivers.add(d);
 			t.add(new Thread(d));
@@ -72,8 +76,6 @@ public class Company {
 			employees.add(car_officer[i]);
 		}
 
-		manager = new Manager(special_requests, IS, customers, 100 /*change*/, employees);
-		t.add(manager);
 		
 
 	}
