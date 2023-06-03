@@ -37,18 +37,21 @@ public class Company {
 		vehicles = new Vector<Vehicle>();
 		customers = new Vector<Customer>();
 		
-		manager = new Manager(special_requests, IS, customers, 100 /*change*/);
+		manager = new Manager(special_requests, IS, customers, 100 /*change*/, employees);
 		t.add(manager);
 
+		
 
 		drivers = new Vector<Driver>();
 		for (int i = 1; i < 5; i++) {
 			Driver d;
+			char lisence;
 			if (i % 2 == 0) {
-				d = new Driver(i, 'A', rides, manager);
+				lisence = 'A';
 			} else {
-				d = new Driver(i, 'B', rides, manager);
+				lisence = 'B';
 			}
+			d = new Driver(i, lisence, rides, manager);
 			drivers.add(d);
 			t.add(new Thread(d));
 		}
@@ -77,6 +80,7 @@ public class Company {
 		}
 
 		
+
 
 	}
 
