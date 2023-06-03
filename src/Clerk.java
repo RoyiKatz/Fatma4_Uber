@@ -5,6 +5,7 @@ public class Clerk  extends Employee implements Runnable{
 	private UnboundedBuffer<Request> requests, special_requests;
 	private UnboundedBuffer<ServiceCall> calls;
 	private Vector<Customer> customers;
+	private static int expected_requests = 100;
 
 	public Clerk(int id, UnboundedBuffer<Request> requests, UnboundedBuffer<Request> special_requests
 			, UnboundedBuffer<ServiceCall> calls, Vector<Customer> customers) {
@@ -14,6 +15,7 @@ public class Clerk  extends Employee implements Runnable{
 		this.special_requests = special_requests;
 		this.calls = calls;
 		this.customers = customers;
+
 	}
 
 	@Override
@@ -34,17 +36,30 @@ public class Clerk  extends Employee implements Runnable{
 	protected void work() {
 		try {
 
-			Request request = requests.extract();
+			Request request = requests.extract();	
+			expected_requests--;
 			checkRequest(request);
+
+			// if this is the last request
+			if (expected_requests == 0) {
+				finishWorkDay();
+			}
 
 		} catch(InterruptedException e) {}
 
 	}
 
 
+	// finish the day and alert other clerks
+	public synchronized void finishWorkDay() {
+		not_finished = false;
+		notifyAll();
+	}
+
+
 	// check a request
 	private void checkRequest(Request request) {
-				
+
 		// if the customer doesn't exist
 		if (findCustomer(request.customerID()) == null) {
 			// create a new customer and add to company
@@ -62,6 +77,7 @@ public class Clerk  extends Employee implements Runnable{
 			sendToManager(request);
 
 		}
+
 	}
 
 
@@ -100,7 +116,7 @@ public class Clerk  extends Employee implements Runnable{
 			Thread.sleep(request.time());
 		} catch (InterruptedException e) {}
 
-		
+
 		// create service call
 		ServiceCall call = new ServiceCall(request.id(), c, service, area, distance);
 
@@ -109,7 +125,7 @@ public class Clerk  extends Employee implements Runnable{
 
 		// terminate request
 		request.stop();
-		
+
 		// get payed;
 		wage += 4 ;
 	}
