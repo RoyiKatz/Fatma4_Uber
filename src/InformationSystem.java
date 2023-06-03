@@ -12,7 +12,7 @@ public class InformationSystem {
 
 
 	// add call
-	public synchronized void addCall(ServiceCall call) {
+	public void addCall(ServiceCall call) {
 
 		if (call.type().equals("Taxi")) {
 			taxi_calls.insert(call);
@@ -20,23 +20,12 @@ public class InformationSystem {
 			delivery_calls.insert(call);
 		}
 		
-		this.notifyAll();
-
 	}
 
-
-	// is empty
-	public boolean isEmpty() {
-		return delivery_calls.isEmpty() && taxi_calls.isEmpty();
-	}
-	
 	
 	// extract a service call from a given list (Delivery/Taxi)
-	public synchronized ServiceCall extract(String list) throws InterruptedException {
-		
-		while (this.isEmpty()) {
-			this.wait();
-		}
+	public ServiceCall extract(String list) throws InterruptedException {
+
 		return (list.equals("Taxi")) ? taxi_calls.extract() : delivery_calls.extract();
 	}
 
