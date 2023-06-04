@@ -52,18 +52,6 @@ public class CarOfficer extends Employee implements Runnable {
 			makeRideFrom(call);
 		} catch(InterruptedException e) {}
 
-		// grab a call
-		/*try {
-
-			if (IS.isEmpty(choice)) {
-				Thread.sleep(5000);
-			} else {
-				Ride call = IS.extract(choice);
-				makeRideFrom(call);
-			}
-
-		} catch (InterruptedException e) {}*/
-
 	}
 
 

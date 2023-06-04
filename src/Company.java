@@ -95,6 +95,7 @@ public class Company {
 	}
 
 
+	// read the requests file
 	private Vector<String> readRequests() {
 		String address = "src\\Data\\Requests.txt";	//file address
 		BufferedReader reader = null;
@@ -126,6 +127,7 @@ public class Company {
 
 	}
 
+	// turn the requests from the files to threads and start them
 	private void startRequests() {
 		Vector<String> req_txt = readRequests();
 		int i = 1;
