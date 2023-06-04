@@ -25,9 +25,7 @@ public class Manager extends Thread {
 	public void run() {
 
 		while(finished_drives < expected_calls) {
-			try {
-				work();
-			} catch (InterruptedException e) {}
+			work();
 		}
 
 		endDay();
@@ -52,33 +50,44 @@ public class Manager extends Thread {
 		System.out.println("Number of taxi rides: " + IS.numOfTaxiRides());
 
 		// print the most popular service area
+		System.out.println("The most popular area is " + IS.mostPopularArea());
 
 		// finish
 		System.out.println("Manager finished");
 	}
 
 
-	private void work() throws InterruptedException {
-		// get request
-		Request request = requests.extract();
+	private void work() {
+		try {
+			System.out.println("manager waiting for request...");
+			// try to grab a request
+			Request request = requests.extract();
+			
+			// condition to end the day
+			if(request == null) {
+				return;
+			}
+			
+			// sleep - 3 seconds
+			Thread.sleep(3000);
 
-		// sleep - 3 seconds
-		Thread.sleep(3000);
+			// make service call
+			ServiceCall call = makeServiceCallFrom(request);
+			System.out.println("manager handling call " + call.id());
 
-		// make service call
-		ServiceCall call = makeServiceCallFrom(request);
+			// find a vehicle
+			Vehicle v = findVehicle();
 
-		// find a vehicle
-		Vehicle v = findVehicle();
+			// insert call to IS
+			IS.addCall(new Ride(call, v));
 
-		// insert call to IS
-		IS.addCall(new Ride(call, v));
+			//print message
+			printCall(call);
 
-		//print message
-		printCall(call);
-
-		//terminate request
-		request.stop();
+			//terminate request
+			request.stop();
+			System.out.println("manager terminating request " + request.id());
+		} catch(InterruptedException e) {}
 	}
 
 
@@ -132,9 +141,12 @@ public class Manager extends Thread {
 
 	// update rides whenever a driver finishes a ride
 	public synchronized void updateRides() {
+		// update the number of finished drives
 		finished_drives++;
 		System.out.println("Drives over: " + finished_drives);
-		notify();
+		
+		// trigger the requests buffer to notify the manager
+		requests.insert(null);
 	}
 
 
