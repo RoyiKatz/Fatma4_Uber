@@ -1,5 +1,7 @@
 import java.util.Vector;
 
+import javax.management.ObjectInstance;
+
 public class Manager extends Thread {
 
 	private UnboundedBuffer<Request> requests;
@@ -33,11 +35,13 @@ public class Manager extends Thread {
 
 
 	private synchronized void endDay() {
-
+		
 		// notify schedulers, drivers, car officers
 		alertEveryoneThatTheDayIsOver();
 
 		// print the total wage of the schedulers, car officers, drivers
+		
+		printEmployeeWages();
 
 		// print the average employee wage
 
@@ -50,6 +54,43 @@ public class Manager extends Thread {
 
 		// finish
 		System.out.println("Manager finished");
+	}
+
+
+	private void printEmployeeWages() {
+		double schedulers_wage = 0;
+		double drivers_wage = 0;
+		double car_officers_wage = 0;
+		double clerks_wage = 0;
+		
+		// calculate employee wages
+		for (Employee employee: employees) {
+			switch (employee.getClass().getSimpleName()) {
+			case "Clerk":
+				clerks_wage += employee.wage();
+				break;
+			case "Scheduler":
+				schedulers_wage += employee.wage();
+				break;
+			case "CarOfficer":
+				car_officers_wage += employee.wage();
+				break;
+			case "Driver":
+				drivers_wage += employee.wage();
+				break;
+			}
+		}
+		
+		// printing wages
+		System.out.println("Schedulers pay for the day: " + schedulers_wage);
+		System.out.println("Car Officers pay for the day: " + car_officers_wage);
+		System.out.println("Drivers pay for the day: " + drivers_wage);
+		
+		// calculate and print the average
+		double avg = schedulers_wage + drivers_wage + car_officers_wage + clerks_wage;
+		avg /= employees.size();
+		System.out.println("The average employee salary is: " + avg);
+		
 	}
 
 

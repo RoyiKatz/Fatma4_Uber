@@ -2,7 +2,7 @@
 public abstract class Employee extends Thread {
 
 	protected int id;
-	protected int wage;
+	protected double wage;
 	protected boolean not_finished;
 	
 	
@@ -15,7 +15,7 @@ public abstract class Employee extends Thread {
 	
 	
 	// getter
-	public int wage() {
+	public double wage() {
 		return wage;
 	}
 	
