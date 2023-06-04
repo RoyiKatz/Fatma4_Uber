@@ -37,22 +37,39 @@ public class CarOfficer extends Employee implements Runnable {
 
 		System.out.println("Car Officer " + id + " trying to grab " + choice + " call");
 
-		// grab a call
+		while (wrongChoice(choice)) {
+			//sleep
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {}
+			//choose again
+			choice = chooseBuffer();
+		}
+
+		// try to grab a call
 		try {
-			
+			Ride call = IS.extract(choice);
+			makeRideFrom(call);
+		} catch(InterruptedException e) {}
+
+		// grab a call
+		/*try {
+
 			if (IS.isEmpty(choice)) {
 				Thread.sleep(5000);
 			} else {
 				Ride call = IS.extract(choice);
 				makeRideFrom(call);
-				// get payed
-				wage += 5;
 			}
 
-		} catch (InterruptedException e) {}
+		} catch (InterruptedException e) {}*/
 
 	}
 
+
+	private boolean wrongChoice(String choice) {
+		return IS.isEmpty(choice) && !IS.isEmpty();
+	}
 
 	// choose service calls queue from information system
 	private String chooseBuffer(){
@@ -69,6 +86,8 @@ public class CarOfficer extends Employee implements Runnable {
 
 		// creating instance of ReadyRide
 		ReadyRide ride = new ReadyRide(call);
+		// get payed
+		wage += 5;
 
 		rides.insert(ride);
 
