@@ -35,11 +35,7 @@ public class Manager extends Thread {
 	private synchronized void endDay() {
 
 		// notify schedulers, drivers, car officers
-		for (Employee employee: employees) {
-			if (!(employee instanceof Clerk)) {
-				employee.finishWorkDay();
-			}
-		}
+		alertEveryoneThatTheDayIsOver();
 
 		// print the total wage of the schedulers, car officers, drivers
 
@@ -54,6 +50,17 @@ public class Manager extends Thread {
 
 		// finish
 		System.out.println("Manager finished");
+	}
+
+
+	private synchronized void alertEveryoneThatTheDayIsOver() {
+		for (Employee employee: employees) {
+			if (!(employee instanceof Clerk)) {
+				employee.finishWorkDay();
+				employee.interrupt();
+			}
+		}
+
 	}
 
 
