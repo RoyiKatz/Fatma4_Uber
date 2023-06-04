@@ -1,6 +1,6 @@
 import java.util.Vector;
 
-public class Clerk  extends Employee implements Runnable{
+public class Clerk  extends Employee{
 
 	private UnboundedBuffer<Request> requests, special_requests;
 	private UnboundedBuffer<ServiceCall> calls;
@@ -18,23 +18,8 @@ public class Clerk  extends Employee implements Runnable{
 
 	}
 
-	
-	@Override
-	public void run() {
 
-		// while not finished
-		while (not_finished) {
-			//continue working
-			work();
-		}
-
-		// finished the day - notify other clerks
-		System.out.println("clerk " + id + " finished");
-		notifyAllClerks();
-	}
-
-
-	// try to grab a request
+	// work logic
 	protected void work() {
 		try {
 
@@ -53,6 +38,15 @@ public class Clerk  extends Employee implements Runnable{
 		} catch(InterruptedException e) {}
 
 	}
+	
+	
+	// end the day
+	protected void endDay() {
+		// finished the day - notify other clerks
+		System.out.println("clerk " + id + " finished");
+		notifyAllClerks();
+	}
+
 
 
 	// alert other clerks the day is over

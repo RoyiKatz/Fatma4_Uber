@@ -1,6 +1,6 @@
 
 
-public class CarOfficer extends Employee implements Runnable {
+public class CarOfficer extends Employee {
 
 	private InformationSystem IS;
 	private BoundedBuffer<ReadyRide> rides;
@@ -11,22 +11,17 @@ public class CarOfficer extends Employee implements Runnable {
 		this.rides = rides;
 	}
 
-	@Override
-	public void run() {
-
-		// attempt to grab a call
-		while (not_finished) {
-			work();
-		}
-
-		System.out.println("Car Officer " + id + " finished");
-
-	}
 
 
-	@Override
+	// work logic
 	protected void work() {
 		grabCall();
+	}
+	
+	
+	// end of day
+	protected void endDay() {
+		System.out.println("Car Officer " + id + " finished");
 	}
 
 

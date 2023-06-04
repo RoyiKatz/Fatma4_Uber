@@ -1,5 +1,5 @@
 
-public abstract class Employee {
+public abstract class Employee extends Thread {
 
 	protected int id;
 	protected int wage;
@@ -20,7 +20,21 @@ public abstract class Employee {
 	}
 	
 	
+	// run method
+	public void run() {
+		// while day is not finished
+		while (not_finished) {
+			work();
+		}
+		
+		// when finished
+		endDay();
+	}
+
 	protected abstract void work();
+	
+	protected abstract void endDay();
+
 	
 	
 	// finish work day

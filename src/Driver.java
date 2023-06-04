@@ -1,5 +1,5 @@
 
-public class Driver extends Employee implements Runnable{
+public class Driver extends Employee {
 
 	private char license;
 	private BoundedBuffer<ReadyRide> rides;
@@ -15,6 +15,20 @@ public class Driver extends Employee implements Runnable{
 		this.manager = manager;
 	}
 
+	
+	protected void work() {
+		// try to grab a ride
+		try {
+			grabDrive();
+		} catch (InterruptedException e) {}
+	}
+	
+	
+	// end of day
+	protected void endDay() {
+		System.out.println("Driver " + id + " finished");
+	}
+
 
 	// check license against a vehicle
 	public boolean licenseMatch(Vehicle v) {
@@ -27,25 +41,6 @@ public class Driver extends Employee implements Runnable{
 		} else {
 			return license == 'A';
 		}
-	}
-
-
-	@Override
-	public void run() {
-
-		while (not_finished) {
-			work();
-		}
-		
-		System.out.println("Driver " + id + " finished");
-	}
-
-
-	protected void work() {
-		// try to grab a ride
-		try {
-			grabDrive();
-		} catch (InterruptedException e) {}
 	}
 
 

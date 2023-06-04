@@ -1,5 +1,5 @@
 
-public class Scheduler extends Employee implements Runnable {
+public class Scheduler extends Employee {
 
 	private String area;
 	private UnboundedBuffer<ServiceCall> calls;
@@ -13,24 +13,21 @@ public class Scheduler extends Employee implements Runnable {
 		this.IS = IS;
 	}
 
-
-	@Override
-	public void run() {
-		while(not_finished) {
-			work();
-		}
-		
-		System.out.println("Scheduler " + id + " finished");
-
-	}
 	
-	
+	// work logic
 	protected void work() {
 		try {
 			// grab a call and check it
 			ServiceCall call = calls.extract();
 			checkCall(call);
 		} catch (InterruptedException e) {}
+	}
+	
+	
+	// end of day
+	protected void endDay() {
+		System.out.println("Scheduler " + id + " finished");
+
 	}
 
 

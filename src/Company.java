@@ -53,14 +53,14 @@ public class Company {
 			}
 			d = new Driver(i, lisence, rides, manager);
 			drivers.add(d);
-			t.add(new Thread(d));
+			t.add(d);
 		}
 		employees.addAll(0, drivers);
 
 		clerk = new Clerk[3];
 		for (int i = 0; i < 3; i++) {
 			clerk[i] = new Clerk(i+1, requests, special_requests, calls, customers);
-			t.add(new Thread(clerk[i]));
+			t.add(clerk[i]);
 			employees.add(clerk[i]);
 		}
 
@@ -68,14 +68,14 @@ public class Company {
 		for (int i = 0; i < 2; i++) {
 			String area = (i == 1) ? "Tel Aviv" : "Jerusalem";
 			scheduler[i] = new Scheduler(i+1, area, calls, IS);
-			t.add(new Thread(scheduler[i]));
+			t.add(scheduler[i]);
 			employees.add(scheduler[i]);
 		}
 
 		car_officer = new CarOfficer[3];
 		for (int i = 0; i < 3; i++) {
 			car_officer[i] = new CarOfficer(i+1, IS, rides);
-			t.add(new Thread(car_officer[i]));
+			t.add(car_officer[i]);
 			employees.add(car_officer[i]);
 		}
 
