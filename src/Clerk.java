@@ -141,7 +141,6 @@ public class Clerk  extends Employee implements Runnable{
 			Thread.sleep(500);
 		} catch (InterruptedException e) {}
 
-		System.out.println("request " + request.id() + " transfered to manager");
 		special_requests.insert(request);
 
 	}

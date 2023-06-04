@@ -27,6 +27,7 @@ public class Scheduler extends Employee implements Runnable {
 	
 	protected void work() {
 		try {
+			// grab a call and check it
 			ServiceCall call = calls.extract();
 			checkCall(call);
 		} catch (InterruptedException e) {}
@@ -47,7 +48,7 @@ public class Scheduler extends Employee implements Runnable {
 		}
 	}
 
-	// handke a service call
+	// handle a service call
 	private void handleCall(ServiceCall call) {
 		
 		System.out.println("Scheduler " + id + " handling call " + call.id() + "...");
