@@ -34,16 +34,14 @@ public class Manager extends Thread {
 	}
 
 
+	// end of day
 	private synchronized void endDay() {
 		
 		// notify schedulers, drivers, car officers
 		alertEveryoneThatTheDayIsOver();
 
-		// print the total wage of the schedulers, car officers, drivers
-		
+		// print the total wage of the schedulers, car officers, drivers, average pay
 		printEmployeeWages();
-
-		// print the average employee wage
 
 		// print the number of deliveries, taxi rides
 		System.out.println("Number of deliveries: " + IS.numOfDeliveries());
@@ -57,6 +55,7 @@ public class Manager extends Thread {
 	}
 
 
+	// print employee salary stats
 	private void printEmployeeWages() {
 		double schedulers_wage = 0;
 		double drivers_wage = 0;
@@ -94,6 +93,7 @@ public class Manager extends Thread {
 	}
 
 
+	// notify the employees the day is over
 	private synchronized void alertEveryoneThatTheDayIsOver() {
 		for (Employee employee: employees) {
 			if (!(employee instanceof Clerk)) {
@@ -105,9 +105,9 @@ public class Manager extends Thread {
 	}
 
 
+	// work logic
 	private void work() {
 		try {
-			System.out.println("manager waiting for request...");
 			// try to grab a request
 			Request request = requests.extract();
 			
@@ -134,7 +134,6 @@ public class Manager extends Thread {
 
 			//terminate request
 			request.stop();
-			System.out.println("manager terminating request " + request.id());
 		} catch(InterruptedException e) {}
 	}
 
