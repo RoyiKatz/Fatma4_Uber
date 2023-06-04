@@ -37,7 +37,6 @@ public class Manager extends Thread {
 		// notify schedulers, drivers, car officers
 		for (Employee employee: employees) {
 			if (!(employee instanceof Clerk)) {
-				System.out.println("notifying employee to finish");
 				employee.finishWorkDay();
 			}
 		}
