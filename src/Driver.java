@@ -5,14 +5,17 @@ public class Driver extends Employee {
 	private BoundedBuffer<ReadyRide> rides;
 	private double total_profit, total_distance;
 	private Manager manager;
+	private UnboundedBuffer<Vehicle> vehicles;
 
-	public Driver(int id, char license, BoundedBuffer<ReadyRide> rides, Manager manager) {
+	public Driver(int id, char license, BoundedBuffer<ReadyRide> rides,
+			Manager manager, UnboundedBuffer<Vehicle> vehicles) {
 		super(id);
 		this.license = license;
 		this.rides = rides;
 		total_distance = 0;
 		total_profit = 0;
 		this.manager = manager;
+		this.vehicles = vehicles;
 	}
 
 	
@@ -56,6 +59,8 @@ public class Driver extends Employee {
 			endRide(ride);
 
 			// returning vehicle
+			vehicles.insert(ride.vehicle());
+			System.out.println("Driver " + id + " returned vehicle " + ride.vehicle().licenseNumber());
 
 		} else {
 			// license doesn't match

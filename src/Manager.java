@@ -1,7 +1,5 @@
 import java.util.Vector;
 
-import javax.management.ObjectInstance;
-
 public class Manager extends Thread {
 
 	private UnboundedBuffer<Request> requests;
@@ -9,11 +7,12 @@ public class Manager extends Thread {
 	private Vector<Customer> customers;
 	private Vector<Employee> employees;
 	private int expected_calls, finished_drives;
+	UnboundedBuffer<Vehicle> vehicles;
 
 
 	// constructor
-	public Manager(UnboundedBuffer<Request> requests, InformationSystem IS,
-			Vector<Customer> customers, int expected_calls, Vector<Employee> employees) {
+	public Manager(UnboundedBuffer<Request> requests, InformationSystem IS, Vector<Customer> customers,
+			int expected_calls, Vector<Employee> employees, UnboundedBuffer<Vehicle> vehicles) {
 
 		this.requests = requests;
 		this.IS = IS;
@@ -21,6 +20,7 @@ public class Manager extends Thread {
 		finished_drives = 0;
 		this.expected_calls = expected_calls;
 		this.employees = employees;
+		this.vehicles = vehicles;
 	}
 
 
@@ -124,7 +124,7 @@ public class Manager extends Thread {
 			System.out.println("manager handling call " + call.id());
 
 			// find a vehicle
-			Vehicle v = findVehicle();
+			Vehicle v = findVehicle(call);
 
 			// insert call to IS
 			IS.addCall(new Ride(call, v));
@@ -138,9 +138,21 @@ public class Manager extends Thread {
 	}
 
 
-	private Vehicle findVehicle() {
-		// TODO Auto-generated method stub
-		return new Taxi(123, "toyota", 2000);
+	// find vehicle for a call
+	private Vehicle findVehicle(ServiceCall call) {
+		// get a vehicle
+		Vehicle vehicle = null;
+		try {
+			System.out.println("Manager is waiting on a vehicle");
+			vehicle = vehicles.extract();
+			while (vehicle instanceof Motorcycle && call.type().equals("Taxi")) {
+				vehicles.insert(vehicle);
+				vehicle = vehicles.extract();
+			}
+			System.out.println("Manager grabbed vehicle " + vehicle.licenseNumber());
+		} catch (InterruptedException e) {}
+
+		return vehicle;
 	}
 
 

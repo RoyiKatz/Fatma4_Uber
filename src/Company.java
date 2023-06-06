@@ -11,7 +11,7 @@ public class Company {
 	private Scheduler[] scheduler;
 	private CarOfficer[] car_officer;
 	private Vector<Driver> drivers;
-	private Vector<Vehicle> vehicles;
+	private UnboundedBuffer<Vehicle> vehicles;
 	private Vector<Customer> customers;
 	private Vector<Employee> employees;
 
@@ -25,6 +25,14 @@ public class Company {
 		
 		employees = new Vector<Employee>();
 		
+		// create new vehicle database
+		vehicles = new UnboundedBuffer<Vehicle>();
+		int num_of_vehicles = (int)(Math.random() * 50) + 100;
+		System.out.println("Number of vehicles: " + num_of_vehicles);
+		for (int i = 1; i <= num_of_vehicles; i++) {
+			vehicles.insert(createVehicle(i));
+		}
+		
 		IS = new InformationSystem();
 
 		// group all the threads together
@@ -34,10 +42,9 @@ public class Company {
 		special_requests = new UnboundedBuffer<Request>();
 		calls = new UnboundedBuffer<ServiceCall>();
 		rides = new BoundedBuffer<ReadyRide>();
-		vehicles = new Vector<Vehicle>();
 		customers = new Vector<Customer>();
 		
-		manager = new Manager(special_requests, IS, customers, 100 /*change*/, employees);
+		manager = new Manager(special_requests, IS, customers, 100 /*change*/, employees, vehicles);
 		t.add(manager);
 
 		
@@ -51,7 +58,7 @@ public class Company {
 			} else {
 				lisence = 'B';
 			}
-			d = new Driver(i, lisence, rides, manager);
+			d = new Driver(i, lisence, rides, manager, vehicles);
 			drivers.add(d);
 			t.add(d);
 		}
@@ -67,7 +74,7 @@ public class Company {
 		scheduler = new Scheduler[2];
 		for (int i = 0; i < 2; i++) {
 			String area = (i == 1) ? "Tel Aviv" : "Jerusalem";
-			scheduler[i] = new Scheduler(i+1, area, calls, IS);
+			scheduler[i] = new Scheduler(i+1, area, calls, IS, vehicles);
 			t.add(scheduler[i]);
 			employees.add(scheduler[i]);
 		}
@@ -149,4 +156,22 @@ public class Company {
 			r.start();
 		}
 	}
+	
+	
+	// create a random vehicle
+	private Vehicle createVehicle(int license_number) {
+			
+		String[] models = {"Toyota", "Honda", "Audi", "Transformer"};
+		String model = models[(int)(Math.random() * 4)];
+		int year = (int)(Math.random() * 53) + 1970;
+		
+		if (license_number % 4 != 1) {
+			return new Taxi(license_number, model, year);
+		} else {
+			int max_speed = (int)(Math.random()*200) + 10;
+			return new Motorcycle(license_number, model, year, max_speed);
+		}
+		
+	}
+	
 }
