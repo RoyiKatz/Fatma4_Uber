@@ -46,6 +46,10 @@ public abstract class Vehicle {
 
 	//return a string representation of the type of vehicle
 	abstract protected String getType();
+	
+	
+	// return whether the vehicle is compatible with a certain service
+	public abstract boolean isCompatible(String service);
 
 
 	//toString

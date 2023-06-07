@@ -83,7 +83,7 @@ public class Scheduler extends Employee {
 		try {
 			System.out.println("Manager is waiting on a vehicle");
 			vehicle = vehicles.extract();
-			while (vehicle instanceof Motorcycle && call.type().equals("Taxi")) {
+			while (!vehicle.isCompatible(call.type())) {
 				vehicles.insert(vehicle);
 				vehicle = vehicles.extract();
 			}

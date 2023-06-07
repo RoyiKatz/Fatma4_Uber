@@ -25,4 +25,10 @@ public class Motorcycle extends Vehicle {
 
 	}
 
+
+	@Override
+	public boolean isCompatible(String service) {
+		return service.equals("Delivery");
+	}
+
 }

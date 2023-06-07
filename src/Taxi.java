@@ -22,4 +22,10 @@ public class Taxi extends Vehicle {
 
 	}
 
+
+	@Override
+	public boolean isCompatible(String service) {
+		return true;
+	}
+
 }

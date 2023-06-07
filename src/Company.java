@@ -160,12 +160,14 @@ public class Company {
 	
 	// create a random vehicle
 	private Vehicle createVehicle(int license_number) {
-			
+		
+		int type = (int)(Math.random()*2);
+		
 		String[] models = {"Toyota", "Honda", "Audi", "Transformer"};
 		String model = models[(int)(Math.random() * 4)];
 		int year = (int)(Math.random() * 53) + 1970;
 		
-		if (license_number % 4 != 1) {
+		if (type == 0) {
 			return new Taxi(license_number, model, year);
 		} else {
 			int max_speed = (int)(Math.random()*200) + 10;
