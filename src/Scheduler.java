@@ -62,7 +62,7 @@ public class Scheduler extends Employee {
 		double time_to_sleep = v.calculateDrivingTime(call.distance()) /4 *100;
 		System.out.println("Scheduler " + id + " sleeping for " + (time_to_sleep) + " seconds");
 		try {
-			Thread.sleep((long)time_to_sleep);
+			Thread.sleep((long)(time_to_sleep));
 			System.out.println("Scheduler " + id + " done sleeping");
 		} catch (InterruptedException e) {}
 
@@ -71,14 +71,13 @@ public class Scheduler extends Employee {
 		printCall(call);
 
 		// get payed
-		wage += time_to_sleep / 1000;
+		wage += time_to_sleep;
 
 	}
 
 
 	// find vehicle for a call
 	private Vehicle findVehicle(ServiceCall call) {
-		// get a vehicle
 		Vehicle vehicle = null;
 		try {
 			System.out.println("Manager is waiting on a vehicle");

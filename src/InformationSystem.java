@@ -66,7 +66,7 @@ public class InformationSystem {
 		}
 	}
 	
-	// return whether both rude queues are empty
+	// return whether both ride queues are empty
 	public boolean isEmpty() {
 		return taxi_calls.isEmpty() && delivery_calls.isEmpty();
 	}

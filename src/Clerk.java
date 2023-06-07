@@ -48,7 +48,6 @@ public class Clerk  extends Employee{
 	}
 
 
-
 	// alert other clerks the day is over
 	private synchronized void notifyAllClerks() {
 		notifyAll();

@@ -42,16 +42,23 @@ public class Manager extends Thread {
 
 		// print the total wage of the schedulers, car officers, drivers, average pay
 		printEmployeeWages();
+		
+		// print stats
+		printStats();
 
+		// finish
+		System.out.println("Manager finished");
+	}
+
+
+	// print stats
+	private void printStats() {
 		// print the number of deliveries, taxi rides
 		System.out.println("Number of deliveries: " + IS.numOfDeliveries());
 		System.out.println("Number of taxi rides: " + IS.numOfTaxiRides());
 
 		// print the most popular service area
-		System.out.println("The most popular area is " + IS.mostPopularArea());
-
-		// finish
-		System.out.println("Manager finished");
+		System.out.println("The most popular area is " + IS.mostPopularArea());	
 	}
 
 
@@ -123,24 +130,30 @@ public class Manager extends Thread {
 			ServiceCall call = makeServiceCallFrom(request);
 			System.out.println("manager handling call " + call.id());
 
-			// find a vehicle
-			Vehicle v = findVehicle(call);
-
-			// insert call to IS
-			IS.addCall(new Ride(call, v));
-
-			//print message
-			printCall(call);
-
+			// make ride from call
+			makeRideFrom(call);
+			
 			//terminate request
 			request.stop();
 		} catch(InterruptedException e) {}
 	}
 
 
+	// make a ride from a service call
+	private void makeRideFrom(ServiceCall call) {
+		// find a vehicle
+		Vehicle v = findVehicle(call);
+
+		// insert call to IS
+		IS.addCall(new Ride(call, v));
+
+		//print message
+		printCall(call);		
+	}
+
+
 	// find vehicle for a call
 	private Vehicle findVehicle(ServiceCall call) {
-		// get a vehicle
 		Vehicle vehicle = null;
 		try {
 			System.out.println("Manager is waiting on a vehicle");

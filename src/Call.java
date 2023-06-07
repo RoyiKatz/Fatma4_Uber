@@ -28,6 +28,7 @@ public abstract class Call {
 	}
 	
 	
+	// getters
 	public String type() {
 		return service_type;
 	}

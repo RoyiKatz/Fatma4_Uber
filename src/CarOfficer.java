@@ -28,18 +28,8 @@ public class CarOfficer extends Employee {
 	//grab a call
 	private void grabCall() {
 
+		// choose a buffer
 		String choice = chooseBuffer();
-
-		System.out.println("Car Officer " + id + " trying to grab " + choice + " call");
-
-		while (wrongChoice(choice)) {
-			//sleep
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {}
-			//choose again
-			choice = chooseBuffer();
-		}
 
 		// try to grab a call
 		try {
@@ -50,6 +40,7 @@ public class CarOfficer extends Employee {
 	}
 
 
+	// return whether the chosen buffer is empty and the other is not
 	private boolean wrongChoice(String choice) {
 		return IS.isEmpty(choice) && !IS.isEmpty();
 	}
@@ -57,8 +48,21 @@ public class CarOfficer extends Employee {
 	// choose service calls queue from information system
 	private String chooseBuffer(){
 		double chance = Math.random();
+		
+		String choice = (chance < 0.5) ? "Delivery" : "Taxi";
+		System.out.println("Car Officer " + id + " trying to grab " + choice + " call");
 
-		return (chance < 0.5) ? "Delivery" : "Taxi";
+		// if it's a wrong choice - sleep and choose again
+		while (wrongChoice(choice)) {
+			//sleep
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {}
+			//choose again
+			choice = chooseBuffer();
+		}
+
+		return choice;
 	}
 
 

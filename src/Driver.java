@@ -51,6 +51,7 @@ public class Driver extends Employee {
 	private void grabDrive() throws InterruptedException {
 		ReadyRide ride = rides.extcract();
 
+		// check license
 		if (licenseMatch(ride.vehicle())) {
 			// simulate drive
 			drive(ride);
