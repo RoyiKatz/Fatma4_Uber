@@ -1,9 +1,12 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.Vector;
 
 public class Company {
+	
+	private Scanner sc = new Scanner(System.in);
 
 	private InformationSystem IS;
 	private Manager manager;
@@ -50,7 +53,12 @@ public class Company {
 		
 
 		drivers = new Vector<Driver>();
-		for (int i = 1; i < 5; i++) {
+		
+		System.out.println();
+		System.out.print("Enter number of drivers: ");
+		int num_of_drivers = sc.nextInt();
+		
+		for (int i = 1; i <= num_of_drivers; i++) {
 			Driver d;
 			char lisence;
 			if (i % 2 == 0) {
