@@ -76,7 +76,7 @@ public class Driver extends Employee {
 		System.out.println("Driver " + id + " driving call " + ride.details().id());
 
 		double driving_distance = ride.details().distance();
-		long driving_time = (long)(ride.vehicle().calculateDrivingTime(driving_distance) * 1000);
+		long driving_time = (long)(ride.vehicle().calculateDrivingTime(driving_distance) * 100);
 
 		try {
 			Thread.sleep(driving_time);
