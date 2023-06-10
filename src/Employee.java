@@ -34,6 +34,7 @@ public abstract class Employee extends Thread {
 	protected abstract void work();
 	
 	protected abstract void endDay();
+	protected abstract double calculatewage();
 
 	
 	

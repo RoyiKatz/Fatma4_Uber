@@ -6,6 +6,7 @@ public class Clerk  extends Employee{
 	private UnboundedBuffer<ServiceCall> calls;
 	private Vector<Customer> customers;
 	private static int expected_requests = 100;
+     private static int  number_request=0;
 
 	public Clerk(int id, UnboundedBuffer<Request> requests, UnboundedBuffer<Request> special_requests
 			, UnboundedBuffer<ServiceCall> calls, Vector<Customer> customers) {
@@ -15,7 +16,7 @@ public class Clerk  extends Employee{
 		this.special_requests = special_requests;
 		this.calls = calls;
 		this.customers = customers;
-
+        
 	}
 
 
@@ -26,6 +27,7 @@ public class Clerk  extends Employee{
 			// grab a request and count it
 			Request request = requests.extract();	
 			expected_requests--;
+			number_request++;
 			
 			// check the request
 			checkRequest(request);
@@ -126,7 +128,12 @@ public class Clerk  extends Employee{
 		// get payed;
 		wage += 4 ;
 	}
-
+	public void calculatewage (){
+		int totalwage= (int)(number_request*wage);
+		
+		
+	}
+     
 
 	// send a request to the manager
 	private void sendToManager(Request request) {

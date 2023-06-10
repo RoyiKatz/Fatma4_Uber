@@ -125,15 +125,22 @@ public class Driver extends Employee {
 		// get rating
 		int rating = passenger.giveRating();
 
-
+		
 		double distance = ride.details().distance();
 		double time = ride.vehicle().calculateDrivingTime(distance);
-
+		
+		// calculate profit
 		double customer_payment = passenger.pay(time, ride.vehicle().fare());
 		double profit = (customer_payment + rating) - (time * P);
 
 		total_profit += profit;
 	}
+	
 
+
+public double calculatewage () { 
+ double payment= (int)total_profit+2*total_distance;
+ return payment;	
+}
 
 }
