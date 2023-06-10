@@ -4,7 +4,6 @@ public class CarOfficer extends Employee {
 
 	private InformationSystem IS;
 	private BoundedBuffer<ReadyRide> rides;
-	private static int  number_request=0;
 
 	public CarOfficer(int id, InformationSystem info_sys, BoundedBuffer<ReadyRide> rides) {
 		super(id);
@@ -75,13 +74,10 @@ public class CarOfficer extends Employee {
 		// creating instance of ReadyRide
 		ReadyRide ride = new ReadyRide(call);
 		// get payed
-		wage += 5;
+		getPayed(5);
+		getPayed(call.carOfficerBonus());
 
 		rides.insert(ride);
-		number_request++;
 	}
-public double calculatewage() {
-	double sum=wage*number_request;
-	return sum;
-}
+	
 }

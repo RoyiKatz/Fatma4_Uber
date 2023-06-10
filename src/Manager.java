@@ -39,6 +39,11 @@ public class Manager extends Thread {
 		
 		// notify schedulers, drivers, car officers
 		alertEveryoneThatTheDayIsOver();
+		
+		// wait a little
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
 
 		// print the total wage of the schedulers, car officers, drivers, average pay
 		printEmployeeWages();
@@ -145,7 +150,7 @@ public class Manager extends Thread {
 		Vehicle v = findVehicle(call);
 
 		// insert call to IS
-		IS.addCall(new Ride(call, v));
+		IS.addCall(new Ride(call, v, 20));
 
 		//print message
 		printCall(call);		

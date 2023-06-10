@@ -5,17 +5,18 @@ public class Clerk  extends Employee{
 	private UnboundedBuffer<Request> requests, special_requests;
 	private UnboundedBuffer<ServiceCall> calls;
 	private Vector<Customer> customers;
-	private static int expected_requests = 100;
-     private static int  number_request=0;
+	private int expected_requests;
+	private static int requests_arrived;
 
 	public Clerk(int id, UnboundedBuffer<Request> requests, UnboundedBuffer<Request> special_requests
-			, UnboundedBuffer<ServiceCall> calls, Vector<Customer> customers) {
+			, UnboundedBuffer<ServiceCall> calls, Vector<Customer> customers, int expected_requests) {
 		super(id);
 
 		this.requests = requests;
 		this.special_requests = special_requests;
 		this.calls = calls;
 		this.customers = customers;
+		this.expected_requests = expected_requests;
         
 	}
 
@@ -26,14 +27,13 @@ public class Clerk  extends Employee{
 
 			// grab a request and count it
 			Request request = requests.extract();	
-			expected_requests--;
-			number_request++;
+			requests_arrived++;
 			
 			// check the request
 			checkRequest(request);
 
 			// if this is the last request
-			if (expected_requests == 0) {
+			if (requests_arrived == expected_requests) {
 				finishWorkDay();
 			}
 
@@ -126,14 +126,9 @@ public class Clerk  extends Employee{
 		request.stop();
 
 		// get payed;
-		wage += 4 ;
+		getPayed(4);
 	}
-	public void calculatewage (){
-		int totalwage= (int)(number_request*wage);
-		
-		
-	}
-     
+	     
 
 	// send a request to the manager
 	private void sendToManager(Request request) {
@@ -144,4 +139,8 @@ public class Clerk  extends Employee{
 		special_requests.insert(request);
 
 	}
+
+
+			
+	
 }

@@ -57,21 +57,19 @@ public class Scheduler extends Employee {
 		Vehicle v = findVehicle(call);
 
 		// sleep
-		System.out.println("call " + call.id() + " distance: " + call.distance());
 		System.out.println("call " + call.id() + " driving time: " + v.calculateDrivingTime(call.distance()));
 		double time_to_sleep = v.calculateDrivingTime(call.distance()) /4 *100;
-		System.out.println("Scheduler " + id + " sleeping for " + (time_to_sleep) + " seconds");
+		System.out.println("Scheduler " + id + " sleeping for " + (time_to_sleep/1000) + " seconds");
 		try {
 			Thread.sleep((long)(time_to_sleep));
+			// get payed
+			getPayed((time_to_sleep / 1000) * 3);
 			System.out.println("Scheduler " + id + " done sleeping");
 		} catch (InterruptedException e) {}
 
 		// adding to IS
 		IS.addCall(new Ride(call, v));
 		printCall(call);
-
-		// get payed
-		wage += time_to_sleep;
 
 	}
 
@@ -86,7 +84,7 @@ public class Scheduler extends Employee {
 				vehicles.insert(vehicle);
 				vehicle = vehicles.extract();
 			}
-			System.out.println("Manager grabbed vehicle " + vehicle.licenseNumber());
+			System.out.println("Scheduler " + id + " grabbed vehicle " + vehicle.licenseNumber());
 		} catch (InterruptedException e) {}
 
 		return vehicle;
@@ -97,5 +95,6 @@ public class Scheduler extends Employee {
 	private void printCall(ServiceCall call) {
 		System.out.println("New service call (id: " + call.id() + ") arrived and data inserted to database");
 	}
+
 
 }

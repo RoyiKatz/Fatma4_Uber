@@ -66,7 +66,7 @@ public class Company {
 
 		clerk = new Clerk[3];
 		for (int i = 0; i < 3; i++) {
-			clerk[i] = new Clerk(i+1, requests, special_requests, calls, customers);
+			clerk[i] = new Clerk(i+1, requests, special_requests, calls, customers, 100 /*change*/);
 			t.add(clerk[i]);
 			employees.add(clerk[i]);
 		}

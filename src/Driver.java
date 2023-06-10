@@ -3,7 +3,6 @@ public class Driver extends Employee {
 
 	private char license;
 	private BoundedBuffer<ReadyRide> rides;
-	private double total_profit, total_distance;
 	private Manager manager;
 	private UnboundedBuffer<Vehicle> vehicles;
 
@@ -12,8 +11,6 @@ public class Driver extends Employee {
 		super(id);
 		this.license = license;
 		this.rides = rides;
-		total_distance = 0;
-		total_profit = 0;
 		this.manager = manager;
 		this.vehicles = vehicles;
 	}
@@ -82,10 +79,6 @@ public class Driver extends Employee {
 			Thread.sleep(driving_time);
 		} catch (InterruptedException e) {}
 
-
-		// update total distance
-		total_distance += driving_distance;
-
 	}
 
 
@@ -95,8 +88,10 @@ public class Driver extends Employee {
 		// drop passenger
 		dropPassenger();
 
-		//calculate profit
-		calculateProfit(ride);
+		//calculate profit and get payed
+		double profit = calculateProfit(ride);
+		getPayed(profit);
+		getPayed(ride.driverBonus());
 
 		// alert manager
 		System.out.println("finished drive (id: " + ride.details().id + ")");
@@ -117,7 +112,7 @@ public class Driver extends Employee {
 
 
 	//calculate profit
-	private void calculateProfit(ReadyRide ride) {
+	private double calculateProfit(ReadyRide ride) {
 
 		Customer passenger = ride.details().customer();
 		double P = (Math.random() * 0.5) + 0.5;
@@ -133,14 +128,8 @@ public class Driver extends Employee {
 		double customer_payment = passenger.pay(time, ride.vehicle().fare());
 		double profit = (customer_payment + rating) - (time * P);
 
-		total_profit += profit;
+		return profit;
 	}
 	
-
-
-public double calculatewage () { 
- double payment= (int)total_profit+2*total_distance;
- return payment;	
-}
 
 }
