@@ -57,7 +57,7 @@ public class Company {
 		System.out.println();
 		System.out.print("Enter number of drivers: ");
 		int num_of_drivers = sc.nextInt();
-		
+				
 		for (int i = 1; i <= num_of_drivers; i++) {
 			Driver d;
 			char lisence;
@@ -87,9 +87,13 @@ public class Company {
 			employees.add(scheduler[i]);
 		}
 
+		System.out.println();
+		System.out.print("Enter Car Officer work time (in seconds): ");
+		double car_officer_work_time = sc.nextDouble();
+		
 		car_officer = new CarOfficer[3];
 		for (int i = 0; i < 3; i++) {
-			car_officer[i] = new CarOfficer(i+1, IS, rides);
+			car_officer[i] = new CarOfficer(i+1, IS, rides, car_officer_work_time);
 			t.add(car_officer[i]);
 			employees.add(car_officer[i]);
 		}

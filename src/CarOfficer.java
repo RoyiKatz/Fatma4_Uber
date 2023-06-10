@@ -4,11 +4,13 @@ public class CarOfficer extends Employee {
 
 	private InformationSystem IS;
 	private BoundedBuffer<ReadyRide> rides;
+	private double work_time;
 
-	public CarOfficer(int id, InformationSystem info_sys, BoundedBuffer<ReadyRide> rides) {
+	public CarOfficer(int id, InformationSystem info_sys, BoundedBuffer<ReadyRide> rides, double work_time) {
 		super(id);
 		this.IS = info_sys;
 		this.rides = rides;
+		this.work_time = work_time;
 	}
 
 
@@ -68,6 +70,11 @@ public class CarOfficer extends Employee {
 
 	// make a ride from a service call
 	private void makeRideFrom(Ride call) {
+		
+		// sleep
+		try {
+			Thread.sleep((long)(work_time * 1000));
+		} catch (InterruptedException e) {}
 
 		System.out.println("Car Officer " + id + " is making a ride from call " + call.details().id());
 
