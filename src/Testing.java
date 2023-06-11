@@ -10,8 +10,6 @@ public class Testing {
 
 		Company c = new Company();
 		
-		c.start();
-
 	}
 
 }

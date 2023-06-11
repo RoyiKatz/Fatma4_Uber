@@ -19,8 +19,8 @@ public class CarOfficer extends Employee {
 	protected void work() {
 		grabCall();
 	}
-	
-	
+
+
 	// end of day
 	protected void endDay() {
 		System.out.println("Car Officer " + id + " finished");
@@ -50,7 +50,7 @@ public class CarOfficer extends Employee {
 	// choose service calls queue from information system
 	private String chooseBuffer(){
 		double chance = Math.random();
-		
+
 		String choice = (chance < 0.5) ? "Delivery" : "Taxi";
 		System.out.println("Car Officer " + id + " trying to grab " + choice + " call");
 
@@ -70,11 +70,13 @@ public class CarOfficer extends Employee {
 
 	// make a ride from a service call
 	private void makeRideFrom(Ride call) {
-		
+
 		// sleep
-		try {
-			Thread.sleep((long)(work_time * 1000));
-		} catch (InterruptedException e) {}
+		if (work_time > 0) {
+			try {
+				Thread.sleep((long)(work_time * 1000));
+			} catch (InterruptedException e) {}
+		}
 
 		System.out.println("Car Officer " + id + " is making a ride from call " + call.details().id());
 
@@ -86,5 +88,5 @@ public class CarOfficer extends Employee {
 
 		rides.insert(ride);
 	}
-	
+
 }
