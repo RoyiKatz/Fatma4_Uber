@@ -33,11 +33,13 @@ public class CarOfficer extends Employee {
 		// choose a buffer
 		String choice = chooseBuffer();
 
-		// try to grab a call
-		try {
-			Ride call = IS.extract(choice);
-			makeRideFrom(call);
-		} catch(InterruptedException e) {}
+		if (not_finished) {
+			// try to grab a call
+			try {
+				Ride call = IS.extract(choice);
+				makeRideFrom(call);
+			} catch(InterruptedException e) {}
+		}
 
 	}
 
