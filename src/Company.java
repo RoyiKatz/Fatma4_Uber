@@ -185,6 +185,7 @@ public class Company {
 		int request_id = 1;
 		for (String line: request_text) {
 			Request request = convert2Request(line, request_id);
+			request_id++;
 			Thread r = new Thread(request);
 			r.start();
 		}
