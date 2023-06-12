@@ -27,8 +27,12 @@ public abstract class Employee extends Thread {
 			work();
 		}
 		
+		/*
+		 * for testing
+		 * 
 		// when finished
 		endDay();
+		*/
 	}
 
 	protected abstract void work();
