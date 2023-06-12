@@ -54,7 +54,6 @@ public class CarOfficer extends Employee {
 		double chance = Math.random();
 
 		String choice = (chance < 0.5) ? "Delivery" : "Taxi";
-		System.out.println("Car Officer " + id + " trying to grab " + choice + " call");
 
 		// if it's a wrong choice - sleep and choose again
 		while (wrongChoice(choice)) {
@@ -80,10 +79,9 @@ public class CarOfficer extends Employee {
 			} catch (InterruptedException e) {}
 		}
 
-		System.out.println("Car Officer " + id + " is making a ride from call " + call.details().id());
-
 		// creating instance of ReadyRide
 		ReadyRide ride = new ReadyRide(call);
+		
 		// get payed
 		getPayed(5);
 		getPayed(call.carOfficerBonus());
