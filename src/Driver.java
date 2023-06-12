@@ -58,7 +58,6 @@ public class Driver extends Employee {
 
 			// returning vehicle
 			vehicles.insert(ride.vehicle());
-			System.out.println("Driver " + id + " returned vehicle " + ride.vehicle().licenseNumber());
 
 		} else {
 			// license doesn't match
@@ -70,8 +69,6 @@ public class Driver extends Employee {
 	// simulate drive
 	private void drive(ReadyRide ride) {
 		
-		System.out.println("Driver " + id + " driving call " + ride.details().id());
-
 		double driving_distance = ride.details().distance();
 		long driving_time = (long)(ride.vehicle().calculateDrivingTime(driving_distance) * 100);
 
@@ -94,7 +91,6 @@ public class Driver extends Employee {
 		getPayed(ride.driverBonus());
 
 		// alert manager
-		System.out.println("finished drive (id: " + ride.details().id + ")");
 		manager.updateRides();
 		
 	}
