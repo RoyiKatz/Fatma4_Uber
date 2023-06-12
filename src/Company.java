@@ -114,7 +114,6 @@ public class Company {
 	private void createVehicleDataBase() {
 		vehicles = new UnboundedBuffer<Vehicle>();
 		int num_of_vehicles = (int)(Math.random() * 50) + 100;
-		System.out.println("Number of vehicles: " + num_of_vehicles);
 		for (int i = 1; i <= num_of_vehicles; i++) {
 			vehicles.insert(createVehicle(i));
 		}		
