@@ -52,12 +52,14 @@ public class Manager extends Thread {
 		printStats();
 
 		// finish
-		System.out.println("Manager finished");
+		System.out.println();
+		System.out.println("Manager finished - the day is over");
 	}
 
 
 	// print stats
 	private void printStats() {
+		System.out.println();
 		// print the number of deliveries, taxi rides
 		System.out.println("Number of deliveries: " + IS.numOfDeliveries());
 		System.out.println("Number of taxi rides: " + IS.numOfTaxiRides());
@@ -93,6 +95,7 @@ public class Manager extends Thread {
 		}
 		
 		// printing wages
+		System.out.println();
 		System.out.println("Schedulers pay for the day: " + schedulers_wage);
 		System.out.println("Car Officers pay for the day: " + car_officers_wage);
 		System.out.println("Drivers pay for the day: " + drivers_wage);
@@ -133,7 +136,6 @@ public class Manager extends Thread {
 
 			// make service call
 			ServiceCall call = makeServiceCallFrom(request);
-			System.out.println("manager handling call " + call.id());
 
 			// make ride from call
 			makeRideFrom(call);
@@ -161,13 +163,11 @@ public class Manager extends Thread {
 	private Vehicle findVehicle(ServiceCall call) {
 		Vehicle vehicle = null;
 		try {
-			System.out.println("Manager is waiting on a vehicle");
 			vehicle = vehicles.extract();
 			while (!vehicle.isCompatible(call.type())) {
 				vehicles.insert(vehicle);
 				vehicle = vehicles.extract();
 			}
-			System.out.println("Manager grabbed vehicle " + vehicle.licenseNumber());
 		} catch (InterruptedException e) {}
 
 		return vehicle;
@@ -220,7 +220,6 @@ public class Manager extends Thread {
 	public synchronized void updateRides() {
 		// update the number of finished drives
 		finished_drives++;
-		System.out.println("Drives over: " + finished_drives);
 		
 		// trigger the requests buffer to notify the manager
 		requests.insert(null);
