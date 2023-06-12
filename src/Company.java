@@ -1,12 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class Company {
-
-	private Scanner sc = new Scanner(System.in);
 
 	private InformationSystem IS;
 	private Manager manager;
@@ -23,18 +20,7 @@ public class Company {
 
 
 	// constructor
-	public Company() {
-
-		// getting user input
-		System.out.println();
-		System.out.print("Enter number of drivers: ");
-		int num_of_drivers = sc.nextInt();
-
-		System.out.println();
-		System.out.print("Enter Car Officer work time (in seconds): ");
-		double car_officer_work_time = sc.nextDouble();
-
-
+	public Company(int num_of_drivers, double car_officer_work_time) {
 
 		// initialize lists
 		createCompanyDataBase();
