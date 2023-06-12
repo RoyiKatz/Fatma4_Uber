@@ -51,20 +51,15 @@ public class Scheduler extends Employee {
 	// handle a service call
 	private void handleCall(ServiceCall call) {
 
-		System.out.println("Scheduler " + id + " handling call " + call.id() + "...");
-
 		// find and remove vehicle
 		Vehicle v = findVehicle(call);
 
 		// sleep
-		System.out.println("call " + call.id() + " driving time: " + v.calculateDrivingTime(call.distance()));
 		double time_to_sleep = v.calculateDrivingTime(call.distance()) /4 *100;
-		System.out.println("Scheduler " + id + " sleeping for " + (time_to_sleep/1000) + " seconds");
 		try {
 			Thread.sleep((long)(time_to_sleep));
 			// get payed
 			getPayed((time_to_sleep / 1000) * 3);
-			System.out.println("Scheduler " + id + " done sleeping");
 		} catch (InterruptedException e) {}
 
 		// adding to IS
@@ -78,13 +73,11 @@ public class Scheduler extends Employee {
 	private Vehicle findVehicle(ServiceCall call) {
 		Vehicle vehicle = null;
 		try {
-			System.out.println("Manager is waiting on a vehicle");
 			vehicle = vehicles.extract();
 			while (!vehicle.isCompatible(call.type())) {
 				vehicles.insert(vehicle);
 				vehicle = vehicles.extract();
 			}
-			System.out.println("Scheduler " + id + " grabbed vehicle " + vehicle.licenseNumber());
 		} catch (InterruptedException e) {}
 
 		return vehicle;
