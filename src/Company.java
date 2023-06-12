@@ -17,6 +17,8 @@ public class Company {
 	private UnboundedBuffer<Request> requests, special_requests;
 	private UnboundedBuffer<ServiceCall> calls;
 	private BoundedBuffer<ReadyRide> rides;
+	
+	private Vector<String> request_text;	// for creating requests out of file
 
 
 	// constructor
@@ -28,20 +30,23 @@ public class Company {
 
 
 		// read request file
-		Vector<String> request_text= readRequests();
+		request_text= readRequests();
 		int num_of_requests = request_text.size();
 
 
 		// initialize employees
 		createEmployees(num_of_drivers, car_officer_work_time, num_of_requests);
 
-
-		// start all the threads (requests and employees)
-		startRequests(request_text);
-		startEmployees();
-
 	}
 
+	
+	// start the workday
+	public void startWorkDay() {
+		// start all the threads (requests and employees)
+		startRequests();
+		startEmployees();
+	}
+	
 
 	// create employees and add them to thread list
 	private void createEmployees(int num_of_drivers, double car_officer_work_time, int num_of_requests) {
@@ -90,7 +95,6 @@ public class Company {
 	}
 
 
-	// initialize needed lists
 	// initialize information system and lists - including a thread list
 	private void createCompanyDataBase() {
 
@@ -106,10 +110,7 @@ public class Company {
 	}
 
 
-
 	// create new vehicle database
-
-	// create vehicles list
 	private void createVehicleDataBase() {
 		vehicles = new UnboundedBuffer<Vehicle>();
 		int num_of_vehicles = (int)(Math.random() * 50) + 100;
@@ -120,10 +121,8 @@ public class Company {
 	}
 
 
-
-
 	// start employee threads
-	public void startEmployees() {
+	private void startEmployees() {
 		manager.start();
 		for (Employee e: employees) {
 			e.start();
@@ -165,8 +164,6 @@ public class Company {
 
 
 	// convert a line of text and an id to a request
-	
-
 	private Request convert2Request(String line, int id) {
 		//make an array of the row element (seperated by tab)
 		String[] row = line.split("\t");
@@ -185,11 +182,9 @@ public class Company {
 
 
 	// turn the requests from the files to threads and start them
-	
-
-	private void startRequests(Vector<String> req_txt) {
+	private void startRequests() {
 		int request_id = 1;
-		for (String line: req_txt) {
+		for (String line: request_text) {
 			Request request = convert2Request(line, request_id);
 			Thread r = new Thread(request);
 			r.start();
@@ -198,8 +193,6 @@ public class Company {
 
 
 	// create a random vehicle
-	
-
 	private Vehicle createVehicle(int license_number) {
 
 		int type = (int)(Math.random()*2);

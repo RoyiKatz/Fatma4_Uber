@@ -22,6 +22,7 @@ public class Testing {
 
 		
 		Company c = new Company(num_of_drivers, car_officer_work_time);
+		c.startWorkDay();
 		
 	}
 
