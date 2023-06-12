@@ -42,6 +42,10 @@ public class GUI {
 	public GUI() {
 		initialize();
 	}
+	
+	public JFrame getFrame() {
+		return this.frame;
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -52,35 +56,40 @@ public class GUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		// title
 		JLabel title_label = new JLabel("Fatma Super Uber, at your service");
 		title_label.setBounds(0, 42, 595, 28);
 		title_label.setFont(new Font("Arial", Font.BOLD, 24));
 		title_label.setHorizontalAlignment(SwingConstants.CENTER);
 		frame.getContentPane().add(title_label);
 		
-		
+		// drivers text - input
 		num_of_drivers_textbox = new JTextField();
 		num_of_drivers_textbox.setFont(new Font("Arial", Font.PLAIN, 12));
 		num_of_drivers_textbox.setBounds(330, 98, 201, 28);
 		frame.getContentPane().add(num_of_drivers_textbox);
 		num_of_drivers_textbox.setColumns(10);
 		
+		// car officer text - input
 		car_officer_work_time_textbox = new JTextField();
 		car_officer_work_time_textbox.setFont(new Font("Arial", Font.PLAIN, 12));
 		car_officer_work_time_textbox.setBounds(330, 162, 201, 28);
 		frame.getContentPane().add(car_officer_work_time_textbox);
 		car_officer_work_time_textbox.setColumns(10);
 		
+		// driver text - display
 		JLabel enter_driver_number_label = new JLabel("Enter number of drivers:");
 		enter_driver_number_label.setFont(new Font("Arial", Font.BOLD, 12));
 		enter_driver_number_label.setBounds(69, 102, 229, 20);
 		frame.getContentPane().add(enter_driver_number_label);
 		
+		// car officer text - display
 		JLabel car_officer_work_time_label = new JLabel("Car officer working time (in seconds):");
 		car_officer_work_time_label.setFont(new Font("Arial", Font.BOLD, 12));
 		car_officer_work_time_label.setBounds(69, 169, 229, 20);
 		frame.getContentPane().add(car_officer_work_time_label);
 		
+		// start button
 		JButton start_button = new JButton("Start");
 		start_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -102,8 +111,9 @@ public class GUI {
 					}
 				}
 				
-				Company c = new Company(num_of_drivers, car_officer_work_time);
-				c.startWorkDay();
+				WorkDay work_day = new WorkDay(num_of_drivers, car_officer_work_time);
+				work_day.setVisible(true);
+				frame.dispose();
 			}
 		});
 		
@@ -111,6 +121,9 @@ public class GUI {
 		start_button.setBounds(69, 246, 229, 41);
 		frame.getContentPane().add(start_button);
 		
+		/* 
+		 * UI elements
+		 */
 		JTextArea txtrIfNoInput = new JTextArea();
 		txtrIfNoInput.setBackground(UIManager.getColor("Button.background"));
 		txtrIfNoInput.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -122,6 +135,8 @@ public class GUI {
 		separator.setBounds(118, 302, 364, 2);
 		frame.getContentPane().add(separator);
 		
+		
+		// exit button
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
