@@ -37,6 +37,8 @@ public class CarOfficer extends Employee {
 			// try to grab a call
 			try {
 				Ride call = IS.extract(choice);
+				System.out.println(this.toString() + ", current pay - " + this.wage());
+				System.out.println(call.details());
 				makeRideFrom(call);
 			} catch(InterruptedException e) {}
 		}
@@ -87,6 +89,10 @@ public class CarOfficer extends Employee {
 		getPayed(call.carOfficerBonus());
 
 		rides.insert(ride);
+	}
+	
+	public String toString() {
+		return "Car Officer " + id;
 	}
 
 }
